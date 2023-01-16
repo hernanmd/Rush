@@ -18,7 +18,7 @@
 EpMonitor disableDuring: [ 
 	Metacello new	
 		baseline: 'Rush';	
-		repository: 'github://hernanmd/Rush/src';	
+		repository: 'github://hernanmd/Rush/yyz';	
 		load ].
 ```
 
@@ -29,14 +29,14 @@ If you want to add the Rush to your Metacello Baselines or Configurations, copy 
 	" ... "
 	spec
 		baseline: 'Rush' 
-		with: [ spec repository: 'github://hernanmd/Rush/src' ];
+		with: [ spec repository: 'github://hernanmd/Rush/yyz' ];
 	" ... "
 ```
 
 # Usage
 
 ```smalltalk
-
+RushBrowser open.
 ```
 
 # Description
