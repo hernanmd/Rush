@@ -18,16 +18,23 @@ Class {
 		'sendersCheckPresenter',
 		'classPathBreadcrumb',
 		'references',
-		'referenceMethod'
+		'referenceMethod',
+		'packagesPresenter'
 	],
 	#category : #Rush
 }
 
-{ #category : #'instance creation' }
-RushBrowser class >> open [ 
-	<script>
-	
-	^ self new open
+{ #category : #private }
+RushBrowser class >> menuRushBrowserOn: aBuilder [
+	<worldMenu>
+
+	(aBuilder item: #Rush)
+		parent: #Tools;
+		label: 'Rush Browser';
+		icon: (self iconNamed: #catalog);
+		action: [ RushBrowser new open ];
+		help: 'Rush Class Hierarchy Browser';
+		order: 627
 ]
 
 { #category : #layout }
@@ -155,9 +162,9 @@ RushBrowser >> connectClassesPresenter [
 
 	classes
 		transmitTo: references
-		transform: [ : aClass | 
-			aClass 
-				ifNotNil: [ self systemNavigation allReferencesTo: aClass binding ] 
+		transform: [ : aClass |
+			aClass
+				ifNotNil: [ self systemNavigation allReferencesTo: aClass binding ]
 				ifNil: [ Array empty ] ]
 		postTransmission: [ : list | references items: list items ]
 ]
@@ -197,14 +204,14 @@ RushBrowser >> connectInstProtocolsPresenter [
 { #category : #initialization }
 RushBrowser >> connectPackagesPresenter [
 
-	packages
+	packagesPresenter
 		transmitTo: classes
 		transform: [ :aPackage |
 			aPackage
 				ifNotNil: [ aPackage definedClasses asArray ]
 				ifNil: [ #(  ) ] ].
 
-	packages
+	packagesPresenter
 		transmitTo: classDefinition
 		transform: [ :aPackage | self classTemplateFor: aPackage ]
 ]
@@ -242,6 +249,12 @@ RushBrowser >> defaultLayout [
 		  add: self upperPaneLayout;
 		  add: self lowerPaneLayout;
 		  yourself
+]
+
+{ #category : #initialization }
+RushBrowser >> defaultPackages [
+
+	^ RPackageOrganizer default packages
 ]
 
 { #category : #'private-instance side' }
@@ -379,12 +392,12 @@ RushBrowser >> initializeInstVariablesPresenter [
 { #category : #initialization }
 RushBrowser >> initializePackagesPresenter [
 
-	packages := self newFilteringList.
-	packages listPresenter
+	packagesPresenter := self newFilteringList.
+	packagesPresenter listPresenter
 		display: [ :package | package name ];
 		displayIcon: [ self iconNamed: #package ];
 		sortingBlock: [ :a :b | a name < b name ];
-		items: RPackageOrganizer default packages
+		items: self packages
 ]
 
 { #category : #initialization }
@@ -424,8 +437,9 @@ RushBrowser >> initializeReferencesPresenter [
 RushBrowser >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
-		title: 'Coso browser';
-		initialExtent: 1000 @ 700
+		title: 'Rush browser';
+		initialExtent: 1000 @ 700;
+		centered
 ]
 
 { #category : #layout }
@@ -470,7 +484,7 @@ RushBrowser >> lowerPaneLayout [
 			yourself);
 		add: (SpBoxLayout newLeftToRight
 			spacing: self spacingBetweenPanes;
-			add: (SpPanedLayout newTopToBottom 
+			add: (SpPanedLayout newTopToBottom
 				add: references;
 				add: referenceMethod;
 				yourself);
@@ -479,12 +493,34 @@ RushBrowser >> lowerPaneLayout [
 		yourself
 ]
 
+{ #category : #opening }
+RushBrowser >> openOnClass: aClass [ 
+
+	packagesPresenter items: self defaultPackages.
+	packagesPresenter selectItem: (RPackageOrganizer default packageOf: aClass).
+	classes selectItem: aClass.
+]
+
+{ #category : #opening }
+RushBrowser >> openOnMethod: aMethod [ 
+
+	packagesPresenter selectItem: (RPackageOrganizer default packageOf: aMethod methodClass) packageName.
+	classes selectItem: aMethod selector
+]
+
+{ #category : #initialization }
+RushBrowser >> packages [
+
+	^ packages
+		ifNil: [ packages := self defaultPackages ]
+]
+
 { #category : #layout }
 RushBrowser >> packagesLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: 'Packages' expand: false;
-		  add: packages;
+		  add: packagesPresenter;
 		  yourself
 ]
 
@@ -495,6 +531,13 @@ RushBrowser >> selectAllProtocolIn: aSpListPresenter [
 	aSpListPresenter selectItem: (aSpListPresenter items 
 		detect: [ : modelItem | modelItem value isVirtualProtocol ]
 		ifNone: [ nil ])
+]
+
+{ #category : #initialization }
+RushBrowser >> selectClass: anObject [
+
+	anObject asRushSelectionIn: self
+
 ]
 
 { #category : #accessing }
