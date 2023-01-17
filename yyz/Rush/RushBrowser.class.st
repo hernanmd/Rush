@@ -16,7 +16,9 @@ Class {
 		'selectedInstMethods',
 		'classDefinition',
 		'sendersCheckPresenter',
-		'classPathBreadcrumb'
+		'classPathBreadcrumb',
+		'references',
+		'referenceMethod'
 	],
 	#category : #Rush
 }
@@ -149,7 +151,15 @@ RushBrowser >> connectClassesPresenter [
 
 	classes
 		transmitTo: classDefinition
-		transform: [ :aClass | aClass ifNotNil: [ aClass definitionString ] ifNil: [ '' ] ]
+		transform: [ :aClass | aClass ifNotNil: [ aClass definitionString ] ifNil: [ '' ] ].
+
+	classes
+		transmitTo: references
+		transform: [ : aClass | 
+			aClass 
+				ifNotNil: [ self systemNavigation allReferencesTo: aClass binding ] 
+				ifNil: [ Array empty ] ]
+		postTransmission: [ : list | references items: list items ]
 ]
 
 { #category : #'private-instance side' }
@@ -157,10 +167,12 @@ RushBrowser >> connectInstMethodsPresenter [
 
 	instMethods
 		transmitTo: code
-		transform: [ :aMethod | aMethod ifNotNil: [ 
-								code beForMethod: aMethod.
-				aMethod sourceCode ] ifNil: [ '' ] ]
-
+		transform: [ :aMethod |
+			aMethod
+				ifNotNil: [
+					code beForMethod: aMethod.
+					aMethod sourceCode ]
+				ifNil: [ '' ] ]
 ]
 
 { #category : #'private-instance side' }
@@ -205,7 +217,21 @@ RushBrowser >> connectPresenters [
 	self connectInstProtocolsPresenter.
 	self connectInstMethodsPresenter.
 	self connectClassProtocolsPresenter.
-	self connectClassMethodsPresenter
+	self connectClassMethodsPresenter.
+	self connectReferencesPresenter
+]
+
+{ #category : #initialization }
+RushBrowser >> connectReferencesPresenter [
+
+	references
+		transmitTo: referenceMethod
+		transform: [ : aMethod |
+			aMethod
+				ifNotNil: [
+					referenceMethod beForMethod: aMethod.
+					aMethod sourceCode ]
+				ifNil: [ '' ] ]
 ]
 
 { #category : #layout }
@@ -290,7 +316,7 @@ RushBrowser >> initializeClassesPresenter [
 		sortingBlock: [ :a :b | a name < b name ]
 ]
 
-{ #category : #layout }
+{ #category : #initialization }
 RushBrowser >> initializeCodePresenter [
 
 	code := self newCode
@@ -380,6 +406,18 @@ RushBrowser >> initializePresenters [
 	self initializeCodePresenter.
 	self initializeClassDefinitionPresenter.
 	self initializeCommentPresenter.
+	self initializeReferencesPresenter.
+]
+
+{ #category : #initialization }
+RushBrowser >> initializeReferencesPresenter [
+
+	references := self newFilteringList.
+	references listPresenter
+		display: [ :class | class name];
+		displayIcon: [ :aClass | self iconNamed: aClass systemIconName ].
+		
+	referenceMethod := self newCode.
 ]
 
 { #category : #initialization }
@@ -387,7 +425,7 @@ RushBrowser >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Coso browser';
-		initialExtent: 800 @ 600
+		initialExtent: 1000 @ 700
 ]
 
 { #category : #layout }
@@ -425,13 +463,17 @@ RushBrowser >> lowerPaneLayout [
 
 	^ SpPanedLayout newLeftToRight
 		positionOfSlider: 0.3;
-		add: (	SpBoxLayout newTopToBottom 
+		add: (	SpBoxLayout newTopToBottom
 			spacing: self spacingBetweenPanes;
 			add: classComment;
 			add: classDefinition;
 			yourself);
-		add: (SpBoxLayout newLeftToRight 
+		add: (SpBoxLayout newLeftToRight
 			spacing: self spacingBetweenPanes;
+			add: (SpPanedLayout newTopToBottom 
+				add: references;
+				add: referenceMethod;
+				yourself);
 			add: code;
 			yourself);
 		yourself
