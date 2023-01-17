@@ -19,21 +19,20 @@ RushCompiledCodeBrowser class >> open [
 RushCompiledCodeBrowser >> connectInstMethodsPresenter [
 
 	super connectInstMethodsPresenter.
-		
-	instMethods 
+
+	instMethods
 		transmitTo: bytecodesPresenter
 		transform: [ : aMethod |
-			aMethod 
+			aMethod
 				ifNil: [ Array empty ]
 				ifNotNil: [ aMethod symbolicBytecodes ] ].
-			
-	instMethods 
+
+	instMethods
 		transmitTo: headerDescription
 		transform: [ : aMethod |
 			aMethod
 				ifNil: [ String empty ]
 				ifNotNil: [ aMethod headerDescription ] ]
-
 ]
 
 { #category : #initialization }
@@ -55,14 +54,13 @@ RushCompiledCodeBrowser >> initializeHeaderPresenter [
 		addStyle: 'iceTipReadonly';
 		addStyle: 'iceTipText4Lines';
 		beWrapWord
-
 ]
 
 { #category : #initialization }
 RushCompiledCodeBrowser >> initializePresenters [
 
 	super initializePresenters.
-	self 
+	self
 		initializeBytecodePresenter;
 		initializeHeaderPresenter
 ]
@@ -79,21 +77,20 @@ RushCompiledCodeBrowser >> initializeWindow: aWindowPresenter [
 RushCompiledCodeBrowser >> lowerPaneLayout [
 
 	^ SpPanedLayout newLeftToRight
-		positionOfSlider: 0.3;	
-		add: (	SpPanedLayout newTopToBottom 
-			positionOfSlider: 0.5;	
+		positionOfSlider: 0.3;
+		add: (	SpPanedLayout newTopToBottom
+			positionOfSlider: 0.5;
 			add: classComment;
 			add: classDefinition;
 			yourself);
-		add: (SpPanedLayout newLeftToRight 
-			positionOfSlider: 0.3;	
+		add: (SpPanedLayout newLeftToRight
+			positionOfSlider: 0.3;
 			add: code;
-			add: (SpPanedLayout newTopToBottom 
-				positionOfSlider: 0.3;	
+			add: (SpPanedLayout newTopToBottom
+				positionOfSlider: 0.3;
 				add: headerDescription;
 				add: bytecodesPresenter;
 				yourself);
 			yourself);
 		yourself
-
 ]

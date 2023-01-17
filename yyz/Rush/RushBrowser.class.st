@@ -187,7 +187,7 @@ RushBrowser >> connectPackagesPresenter [
 
 	packages
 		transmitTo: classes
-		transform: [ :aPackage | 
+		transform: [ :aPackage |
 			aPackage
 				ifNotNil: [ aPackage definedClasses asArray ]
 				ifNil: [ #(  ) ] ].

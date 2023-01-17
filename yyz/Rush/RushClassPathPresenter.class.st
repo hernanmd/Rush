@@ -21,10 +21,9 @@ RushClassPathPresenter class >> example2 [
 RushClassPathPresenter >> addPathDelimiter [
 
 	self layout isEmpty ifFalse: [
-		self layout 
-			add: (self newLabel label: ' > ') 
-			expand: false
-			fill: false ]
+		self layout
+			add: (self newLabel label: ' > ')
+			expand: false ]
 ]
 
 { #category : #adding }
@@ -36,31 +35,32 @@ RushClassPathPresenter >> addPathElement: cls [
 			help: cls comment;
 			action: [ cls browse ])
 		expand: false
-		fill: false
 ]
 
 { #category : #transmission }
 RushClassPathPresenter >> defaultInputPort [
 
 	^ self inputTextPort
-	
+]
+
+{ #category : #layout }
+RushClassPathPresenter >> defaultLayout [
+
+	^ SpBoxLayout newLeftToRight
+		add: (self newLabel label: 'no selection')
+		expand: false;
+		yourself
 ]
 
 { #category : #initialization }
 RushClassPathPresenter >> initializePresenters [
 
-	self layout: SpBoxLayout newLeftToRight.
-	self topClass isClassOrTrait
-		ifTrue: [
-			self topClass withAllSuperclasses reversed do: [ : cls |.
-			self
-				addPathDelimiter;
-				addPathElement: cls ] ]
-		ifFalse: [
-			self layout
-				add: (self newLabel label: 'no selection')
-				expand: false
-				fill: false ]
+	self topClass isClassOrTrait ifFalse: [ ^ self ].
+	self layout removeAll.
+	self topClass withAllSuperclasses reversed do: [ :cls |
+		self
+			addPathDelimiter;
+			addPathElement: cls ]
 ]
 
 { #category : #transmission }
@@ -73,8 +73,7 @@ RushClassPathPresenter >> inputTextPort [
 RushClassPathPresenter >> label: aClass [
 
 	topClass := aClass.
-	self initializePresenters.	
-
+	self initializePresenters
 ]
 
 { #category : #'accessing - model' }

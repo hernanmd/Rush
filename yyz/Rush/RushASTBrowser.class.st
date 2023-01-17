@@ -18,11 +18,11 @@ RushASTBrowser class >> open [
 RushASTBrowser >> connectInstMethodsPresenter [
 
 	super connectInstMethodsPresenter.
-		
-	instMethods 
+
+	instMethods
 		transmitTo: rbAst
 		transform: [ : aMethod |
-			aMethod 
+			aMethod
 				ifNil: [ Array empty ]
 				ifNotNil: [ { aMethod ast } ] ]
 		postTransmission: [ : m | rbAst expandAll ]
@@ -32,7 +32,7 @@ RushASTBrowser >> connectInstMethodsPresenter [
 RushASTBrowser >> initializePresenters [
 
 	super initializePresenters.
-	self initializeRBAst.
+	self initializeRBAst
 ]
 
 { #category : #initialization }
@@ -40,9 +40,9 @@ RushASTBrowser >> initializeRBAst [
 
 	rbAst := self newTree.
 	rbAst
-		display: [ :each | 
+		display: [ :each |
 			String
-				streamContents: [ :stream | 
+				streamContents: [ :stream |
 					stream
 						nextPutAll: each class name;
 						nextPut: $(;
@@ -64,7 +64,7 @@ RushASTBrowser >> initializeWindow: aWindowPresenter [
 { #category : #layout }
 RushASTBrowser >> lowerPaneLayout [
 
-	^  SpBoxLayout newLeftToRight 
+	^  SpBoxLayout newLeftToRight
 			spacing: self spacingBetweenPanes;
 			add: classComment;
 			add: code;
