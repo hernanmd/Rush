@@ -85,7 +85,7 @@ RushCompiledCodeBrowser >> lowerPaneLayout [
 			yourself);
 		add: (SpPanedLayout newLeftToRight
 			positionOfSlider: 0.3;
-			add: code;
+			add: mthSrcPresenter;
 			add: (SpPanedLayout newTopToBottom
 				positionOfSlider: 0.3;
 				add: headerDescription;

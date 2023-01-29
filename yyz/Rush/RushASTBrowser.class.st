@@ -67,7 +67,7 @@ RushASTBrowser >> lowerPaneLayout [
 	^  SpBoxLayout newLeftToRight
 			spacing: self spacingBetweenPanes;
 			add: classComment;
-			add: code;
+			add: mthSrcPresenter;
 			add: rbAst;
 			yourself
 ]
