@@ -64,7 +64,7 @@ RushDruidBrowser >> lowerPaneLayout [
 			yourself);
 		add: (SpBoxLayout newLeftToRight
 			spacing: 5;		
-			add: code;
+			add: mthSrcPresenter;
 			add: (SpPanedLayout newTopToBottom
 				positionOfSlider: 0.3;
 				add: headerDescription;

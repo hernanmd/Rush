@@ -2,11 +2,9 @@ Class {
 	#name : #RushBrowser,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'packages',
 		'classes',
 		'instProtocols',
 		'instMethods',
-		'code',
 		'instVariables',
 		'classProtocols',
 		'classMethods',
@@ -19,7 +17,7 @@ Class {
 		'classPathBreadcrumb',
 		'references',
 		'referenceMethod',
-		'packagesPresenter'
+		'mthSrcPresenter'
 	],
 	#category : #Rush
 }
@@ -35,6 +33,19 @@ RushBrowser class >> menuRushBrowserOn: aBuilder [
 		action: [ RushBrowser new open ];
 		help: 'Rush Class Hierarchy Browser';
 		order: 627
+]
+
+{ #category : #private }
+RushBrowser class >> menuRushPBBrowserOn: aBuilder [
+	<worldMenu>
+
+	(aBuilder item: #RushPB)
+		parent: #Tools;
+		label: 'Rush Packages Browser';
+		icon: (self iconNamed: #catalog);
+		action: [ RushPackagesBrowser new open ];
+		help: 'Rush Class Hierarchy Browser';
+		order: 628
 ]
 
 { #category : #'instance creation' }
@@ -63,17 +74,6 @@ RushBrowser >> classProtocolsLayout [
 ]
 
 { #category : #layout }
-RushBrowser >> classTemplateFor: aPackage [
-
-	aPackage ifNil: [ ^ '' ].
-
-	^ 'Object subclass: #NameOfSubclass
-	slots: {}
-	classVariables: {}
-	package: ''' , aPackage name , ''' '
-]
-
-{ #category : #layout }
 RushBrowser >> classVarsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -95,7 +95,7 @@ RushBrowser >> classesLayout [
 RushBrowser >> connectClassMethodsPresenter [
 
 	classMethods
-		transmitTo: code
+		transmitTo: mthSrcPresenter
 		transform: [ :aMethod | aMethod ifNotNil: [ aMethod sourceCode ] ifNil: [ '' ] ]
 ]
 
@@ -113,7 +113,7 @@ RushBrowser >> connectClassProtocolsPresenter [
 				ifNil: [ #(  ) ] ].
 			
 	classProtocols
-		transmitTo: code
+		transmitTo: mthSrcPresenter
 		transform: [ :aPair | aPair ifNotNil: [ aPair key class sourceCodeTemplate ] ifNil: [ '' ] ]
 ]
 
@@ -180,11 +180,11 @@ RushBrowser >> connectClassesPresenter [
 RushBrowser >> connectInstMethodsPresenter [
 
 	instMethods
-		transmitTo: code
+		transmitTo: mthSrcPresenter
 		transform: [ :aMethod |
 			aMethod
 				ifNotNil: [
-					code beForMethod: aMethod.
+					mthSrcPresenter beForMethod: aMethod.
 					aMethod sourceCode ]
 				ifNil: [ '' ] ]
 ]
@@ -203,30 +203,14 @@ RushBrowser >> connectInstProtocolsPresenter [
 				ifNil: [ #(  ) ] ].
 			
 	instProtocols
-		transmitTo: code
+		transmitTo: mthSrcPresenter
 		transform: [ :aPair | aPair ifNotNil: [ 	aPair key sourceCodeTemplate ] ifNil: [ '' ] ]
 		
 ]
 
 { #category : #initialization }
-RushBrowser >> connectPackagesPresenter [
-
-	packagesPresenter
-		transmitTo: classes
-		transform: [ :aPackage |
-			aPackage
-				ifNotNil: [ aPackage definedClasses asArray ]
-				ifNil: [ #(  ) ] ].
-
-	packagesPresenter
-		transmitTo: classDefinition
-		transform: [ :aPackage | self classTemplateFor: aPackage ]
-]
-
-{ #category : #initialization }
 RushBrowser >> connectPresenters [
 
-	self connectPackagesPresenter.
 	self connectClassesPresenter.
 	self connectInstProtocolsPresenter.
 	self connectInstMethodsPresenter.
@@ -248,6 +232,12 @@ RushBrowser >> connectReferencesPresenter [
 				ifNil: [ '' ] ]
 ]
 
+{ #category : #initialization }
+RushBrowser >> defaultClasses [
+
+	^ Smalltalk image allClasses asSortedCollection: [ : a : b | a name < b name ]
+]
+
 { #category : #layout }
 RushBrowser >> defaultLayout [
 
@@ -256,12 +246,6 @@ RushBrowser >> defaultLayout [
 		  add: self upperPaneLayout;
 		  add: self lowerPaneLayout;
 		  yourself
-]
-
-{ #category : #initialization }
-RushBrowser >> defaultPackages [
-
-	^ RPackageOrganizer default packages
 ]
 
 { #category : #'private-instance side' }
@@ -331,6 +315,7 @@ RushBrowser >> initializeClassesPresenter [
 
 	classes := self newFilteringList.
 	classes listPresenter
+		items: self defaultClasses;
 		display: [ :class | class name];
 		displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
 		sortingBlock: [ :a :b | a name < b name ]
@@ -339,7 +324,7 @@ RushBrowser >> initializeClassesPresenter [
 { #category : #initialization }
 RushBrowser >> initializeCodePresenter [
 
-	code := self newCode
+	mthSrcPresenter := self newCode
 ]
 
 { #category : #initialization }
@@ -397,22 +382,9 @@ RushBrowser >> initializeInstVariablesPresenter [
 ]
 
 { #category : #initialization }
-RushBrowser >> initializePackagesPresenter [
-
-	packagesPresenter := self newFilteringList.
-	packagesPresenter listPresenter
-		display: [ :package | package name ];
-		displayIcon: [ self iconNamed: #package ];
-		sortingBlock: [ :a :b | a name < b name ];
-		items: self packages
-]
-
-{ #category : #initialization }
 RushBrowser >> initializePresenters [
 
 	self initializeClassPathPresenter.
-
-	self initializePackagesPresenter.
 	self initializeClassesPresenter.
 	
 	self initializeInstProtocolsPresenter.
@@ -495,7 +467,7 @@ RushBrowser >> lowerPaneLayout [
 				add: references;
 				add: referenceMethod;
 				yourself);
-			add: code;
+			add: mthSrcPresenter;
 			yourself);
 		yourself
 ]
@@ -503,32 +475,13 @@ RushBrowser >> lowerPaneLayout [
 { #category : #opening }
 RushBrowser >> openOnClass: aClass [ 
 
-	packagesPresenter items: self defaultPackages.
-	packagesPresenter selectItem: (RPackageOrganizer default packageOf: aClass).
 	classes selectItem: aClass.
 ]
 
 { #category : #opening }
 RushBrowser >> openOnMethod: aMethod [ 
 
-	packagesPresenter selectItem: (RPackageOrganizer default packageOf: aMethod methodClass) packageName.
 	classes selectItem: aMethod selector
-]
-
-{ #category : #initialization }
-RushBrowser >> packages [
-
-	^ packages
-		ifNil: [ packages := self defaultPackages ]
-]
-
-{ #category : #layout }
-RushBrowser >> packagesLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  add: 'Packages' expand: false;
-		  add: packagesPresenter;
-		  yourself
 ]
 
 { #category : #private }
@@ -550,7 +503,7 @@ RushBrowser >> selectClass: anObject [
 { #category : #accessing }
 RushBrowser >> selectedClsVars [
 
-	^ selectedClsVars 
+	^ selectedClsVars
 		ifNil: [ selectedClsVars := OrderedCollection new ]
 ]
 
@@ -574,7 +527,6 @@ RushBrowser >> upperPaneLayout [
 		add: classPathBreadcrumb expand: false;
 		add: (SpBoxLayout newLeftToRight
 			spacing: self spacingBetweenPanes;
-			add: self packagesLayout;
 			add: self classesLayout;
 
 			add: (SpBoxLayout newTopToBottom
