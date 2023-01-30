@@ -85,5 +85,10 @@ RushDruidBrowser >> methodCompiler [
 { #category : #'private-instance side' }
 RushDruidBrowser >> renderCfg: aCanvas for: aMethod [
 
-	aCanvas add: (self methodCompiler generateDruidIRFor: aMethod) inspectionCFG
+	| canvasController |
+	
+	(self methodCompiler generateDruidIRFor: aMethod) showIn: aCanvas "inspectionCFG".
+	canvasController := RSCanvasController new.
+	canvasController configuration useBasicZoom.
+	aCanvas @ canvasController
 ]

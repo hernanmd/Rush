@@ -37,6 +37,13 @@ RushBrowser class >> menuRushBrowserOn: aBuilder [
 		order: 627
 ]
 
+{ #category : #'instance creation' }
+RushBrowser class >> open [ 
+	<script>
+	
+	^ self new open
+]
+
 { #category : #layout }
 RushBrowser >> classMethodsLayout [
 
