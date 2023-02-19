@@ -55,6 +55,36 @@ RushBrowser class >> open [
 	^ self new open
 ]
 
+{ #category : #initialization }
+RushBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
+
+	instMthdsTablePresenter
+		addColumn: ((SpCheckBoxTableColumn title: '' evaluated: [ : im | self selectedInstMethods includes: im ])
+			onActivation: [ : cv | ];
+			onDeactivation: [ : cv |  ];
+			beNotExpandable;
+			width: 20;
+			yourself);
+		addColumn: ((SpStringTableColumn title: 'Name' evaluated: [ : im | im selector asString ])
+			width: 180;
+			yourself);
+		addColumn: ((SpStringTableColumn title: 'Senders' evaluated: [ : im | self displaySendersIn: im ])
+			width: 30;
+			beNotExpandable;
+			yourself)
+]
+
+{ #category : #initialization }
+RushBrowser >> buildOrganizationProtocols: aClass [
+
+	^ aClass
+		  ifNotNil: [
+			  aClass organization allProtocols
+				  collect: [ :each | aClass -> each ]
+				  as: OrderedCollection ]
+		  ifNil: [ Array empty ]
+]
+
 { #category : #layout }
 RushBrowser >> classMethodsLayout [
 
@@ -108,72 +138,50 @@ RushBrowser >> connectClassProtocolsPresenter [
 			aPair
 				ifNotNil: [ 
 					aPair value methodSelectors
-						collect: [ :each | aPair key class >> each ]
+						collect: [ :each | aPair key >> each ]
 						as: OrderedCollection ]
 				ifNil: [ #(  ) ] ].
 			
 	classProtocols
 		transmitTo: mthSrcPresenter
-		transform: [ :aPair | aPair ifNotNil: [ aPair key class sourceCodeTemplate ] ifNil: [ '' ] ]
+		transform: [ :aPair | aPair ifNotNil: [ aPair key sourceCodeTemplate ] ifNil: [ '' ] ]
 ]
 
 { #category : #initialization }
 RushBrowser >> connectClassesPresenter [
 
-	classes
-		transmitTo: classPathBreadcrumb.
+	classes transmitTo: classPathBreadcrumb.
 
 	classes
 		transmitTo: classProtocols
-		transform: [ :aClass |
-			aClass
-				ifNotNil: [
-					aClass class organization allProtocols
-						collect: [ :each | aClass -> each ]
-						as: OrderedCollection ]
-				ifNil: [ Array empty ] ]
-		postTransmission: [ :destination :origin | self selectAllProtocolIn: destination ].
+		transform: [ :aClass | self buildOrganizationProtocols: aClass class ]
+		postTransmission: [ :destination :origin |
+		self selectAllProtocolIn: destination ].
 
-	classes
-		transmitTo: classVariables
-		transform: [ : aClass |
-			aClass
-				ifNotNil: [ aClass classVariables ]
-				ifNil: [ Array empty ] ].
+	classes transmitTo: classVariables transform: [ :aClass |
+		aClass ifNotNil: [ aClass classVariables ] ifNil: [ Array empty ] ].
 
 	classes
 		transmitTo: instProtocols
-		transform: [ :aClass |
-			aClass
-				ifNotNil: [
-					aClass organization allProtocols
-						collect: [ :each | aClass -> each ]
-						as: OrderedCollection ]
-				ifNil: [ #(  ) ] ]
+		transform: [ : aClass | self buildOrganizationProtocols: aClass ]
 		postTransmission: [ :destination :origin | self selectAllProtocolIn: destination ].
 
-	classes
-		transmitTo: instVariables
-		transform: [ : aClass |
-			aClass
-				ifNotNil: [ aClass instanceVariables ]
-				ifNil: [ Array empty ] ].
+	classes transmitTo: instVariables transform: [ :aClass |
+		aClass ifNotNil: [ aClass instanceVariables ] ifNil: [ Array empty ] ].
 
-	classes
-		transmitTo: classComment
-		transform: [ : aClass | aClass ifNotNil: [ aClass comment ] ifNil: [ String empty ] ].
+	classes transmitTo: classComment transform: [ :aClass |
+		aClass ifNotNil: [ aClass comment ] ifNil: [ String empty ] ].
 
-	classes
-		transmitTo: classDefinition
-		transform: [ :aClass | aClass ifNotNil: [ aClass definitionString ] ifNil: [ '' ] ].
+	classes transmitTo: classDefinition transform: [ :aClass |
+		aClass ifNotNil: [ aClass definitionString ] ifNil: [ '' ] ].
 
 	classes
 		transmitTo: references
-		transform: [ : aClass |
+		transform: [ :aClass |
 			aClass
 				ifNotNil: [ self systemNavigation allReferencesTo: aClass binding ]
 				ifNil: [ Array empty ] ]
-		postTransmission: [ : list | references items: list items ]
+		postTransmission: [ :list | references items: list items ]
 ]
 
 { #category : #'private-instance side' }
@@ -349,15 +357,8 @@ RushBrowser >> initializeInstMethodsPresenter [
 		whenChangedDo: [ : c | RushSettings computeSenders: c ].
 
 	instMethods := self newTable.
+	self addInstanceMethodsColumnsTo: instMethods.
 	instMethods
-		addColumn: ((SpCheckBoxTableColumn title: '' evaluated: [ : im | self selectedInstMethods includes: im ])
-			onActivation: [ : cv | ];
-			onDeactivation: [ : cv |  ];
-			beNotExpandable;
-			width: 20;
-			yourself);
-		addColumn: (SpStringTableColumn title: 'Name' evaluated: [ : im | im selector asString ]);
-		addColumn: (SpStringTableColumn title: 'Senders' evaluated: [ : im | self displaySendersIn: im ]);
 		alternateRowsColor;
 		items: OrderedCollection new;
 		sortingBlock: [ :a :b | a selector < b selector ]
