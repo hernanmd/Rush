@@ -1,6 +1,6 @@
 Class {
 	#name : #RushPackagesBrowser,
-	#superclass : #RushBrowser,
+	#superclass : #RushBasicClassBrowser,
 	#instVars : [
 		'packages',
 		'packagesPresenter'

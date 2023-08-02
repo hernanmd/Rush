@@ -1,6 +1,6 @@
 Class {
 	#name : #RushDruidBrowser,
-	#superclass : #RushBrowser,
+	#superclass : #RushBasicClassBrowser,
 	#instVars : [
 		'druidPresenter',
 		'methodCompiler',
@@ -115,7 +115,7 @@ RushDruidBrowser >> lowerPaneLayout [
 		add: classDefinition;
 		add: (SpBoxLayout newLeftToRight
 			spacing: 5;
-			add: mthSrcPresenter;
+			add: srcCodePresenter;
 			yourself);
 		yourself
 ]

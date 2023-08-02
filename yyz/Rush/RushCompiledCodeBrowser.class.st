@@ -1,6 +1,6 @@
 Class {
 	#name : #RushCompiledCodeBrowser,
-	#superclass : #RushBrowser,
+	#superclass : #RushBasicClassBrowser,
 	#instVars : [
 		'bytecodesPresenter',
 		'headerDescription'
@@ -85,7 +85,7 @@ RushCompiledCodeBrowser >> lowerPaneLayout [
 			yourself);
 		add: (SpPanedLayout newLeftToRight
 			positionOfSlider: 0.3;
-			add: mthSrcPresenter;
+			add: srcCodePresenter;
 			add: (SpPanedLayout newTopToBottom
 				positionOfSlider: 0.3;
 				add: headerDescription;

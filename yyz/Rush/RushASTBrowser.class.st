@@ -1,6 +1,6 @@
 Class {
 	#name : #RushASTBrowser,
-	#superclass : #RushBrowser,
+	#superclass : #RushBasicClassBrowser,
 	#instVars : [
 		'rbAst'
 	],
@@ -67,7 +67,7 @@ RushASTBrowser >> lowerPaneLayout [
 	^  SpBoxLayout newLeftToRight
 			spacing: self spacingBetweenPanes;
 			add: classComment;
-			add: mthSrcPresenter;
+			add: srcCodePresenter;
 			add: rbAst;
 			yourself
 ]
