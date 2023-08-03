@@ -1,6 +1,13 @@
 Class {
 	#name : #RushClassBrowser,
 	#superclass : #RushBasicClassBrowser,
+	#instVars : [
+		'classProtocols',
+		'classMethods',
+		'classVariables',
+		'selectedClsVars',
+		'classComment'
+	],
 	#category : #Rush
 }
 
@@ -21,17 +28,6 @@ RushClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
 			width: 30;
 			beNotExpandable;
 			yourself)
-]
-
-{ #category : #initialization }
-RushClassBrowser >> buildOrganizationProtocols: aClass [
-
-	^ aClass
-		  ifNotNil: [
-			  aClass protocols
-				  collect: [ :each | aClass -> each ]
-				  as: OrderedCollection ]
-		  ifNil: [ Array empty ]
 ]
 
 { #category : #layout }
@@ -62,6 +58,14 @@ RushClassBrowser >> classVarsLayout [
 ]
 
 { #category : #'private-class side' }
+RushClassBrowser >> connectClassMethodsPresenter [
+
+	classMethods
+		transmitTo: srcCodePresenter
+		transform: [ :aMethod | aMethod ifNotNil: [ aMethod sourceCode ] ifNil: [ '' ] ]
+]
+
+{ #category : #'private-class side' }
 RushClassBrowser >> connectClassProtocolsPresenter [
 
 	classProtocols
@@ -80,41 +84,30 @@ RushClassBrowser >> connectClassProtocolsPresenter [
 ]
 
 { #category : #initialization }
-RushClassBrowser >> connectPresenters [
+RushClassBrowser >> connectClassesPresenter [ 
 
-	self connectClassesPresenter.
-	self connectInstProtocolsPresenter.
-	self connectInstMethodsPresenter.
-	self connectClassProtocolsPresenter.
-	self connectClassMethodsPresenter.
-	self connectReferencesPresenter
+	super connectClassesPresenter.
+	classes
+		transmitTo: classProtocols
+		transform: [ :aClass | self buildOrganizationProtocols: aClass class ]
+		postTransmission: [ :destination :origin | self selectAllProtocolIn: destination ].
+
+	classes transmitTo: classVariables transform: [ :aClass |
+		aClass ifNotNil: [ aClass classVariables ] ifNil: [ Array empty ] ].
+	
+	classes transmitTo: classComment transform: [ :aClass |
+		aClass ifNotNil: [ aClass comment ] ifNil: [ String empty ] ].
+
 ]
 
 { #category : #initialization }
-RushClassBrowser >> connectReferencesPresenter [
+RushClassBrowser >> connectPresenters [
 
-	references
-		transmitTo: referenceMethod
-		transform: [ : aMethod |
-			aMethod
-				ifNotNil: [
-					referenceMethod beForMethod: aMethod.
-					aMethod sourceCode ]
-				ifNil: [ '' ] ]
-]
+	super connectPresenters.
+	
+	self connectClassMethodsPresenter.
+	self connectClassProtocolsPresenter.
 
-{ #category : #'private-instance side' }
-RushClassBrowser >> displaySendersIn: im [
-
-	^ self displaySendersSetting
-		ifTrue: [ im senders size asString ]
-		ifFalse: [ 'NC' ]
-]
-
-{ #category : #accessing }
-RushClassBrowser >> displaySendersSetting [
-
-	^ RushSettings computeSenders
 ]
 
 { #category : #'private-class side' }
@@ -154,14 +147,25 @@ RushClassBrowser >> initializeClassVariablesPresenter [
 ]
 
 { #category : #initialization }
-RushClassBrowser >> initializeReferencesPresenter [
+RushClassBrowser >> initializeCommentPresenter [
 
-	references := self newFilteringList.
-	references listPresenter
-		display: [ :class | class name];
-		displayIcon: [ :aClass | self iconNamed: aClass systemIconName ].
-		
-	referenceMethod := self newCode.
+	classComment := self newText.
+	classComment 
+		placeholder: 'Class comment';
+		text: '';
+		beNotEditable;
+		addStyle: 'iceTipReadonly';
+		addStyle: 'iceTipText4Lines';
+		beWrapWord
+]
+
+{ #category : #initialization }
+RushClassBrowser >> initializePresenters [ 
+
+	super initializePresenters.
+	self initializeClassProtocolsPresenter.
+	self initializeClassVariablesPresenter.
+	self initializeClassMethodsPresenter.
 ]
 
 { #category : #layout }
@@ -177,24 +181,6 @@ RushClassBrowser >> instMethodsLayout [
 ]
 
 { #category : #layout }
-RushClassBrowser >> instProtocolsLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  add: 'Instance Protocols' expand: false;
-		  add: instProtocols;
-		  yourself
-]
-
-{ #category : #layout }
-RushClassBrowser >> instVarsLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  add: 'Instance Variables' expand: false;
-		  add: instVariables;
-		  yourself
-]
-
-{ #category : #layout }
 RushClassBrowser >> lowerPaneLayout [
 
 	^ SpPanedLayout newLeftToRight
@@ -206,10 +192,6 @@ RushClassBrowser >> lowerPaneLayout [
 			yourself);
 		add: (SpBoxLayout newLeftToRight
 			spacing: self spacingBetweenPanes;
-			add: (SpPanedLayout newTopToBottom
-				add: references;
-				add: referenceMethod;
-				yourself);
 			add: srcCodePresenter;
 			yourself);
 		yourself

@@ -6,20 +6,45 @@ Class {
 		'instProtocols',
 		'instMethods',
 		'instVariables',
-		'classProtocols',
-		'classMethods',
-		'classVariables',
-		'selectedClsVars',
-		'classComment',
 		'selectedInstMethods',
 		'classDefinition',
 		'sendersCheckPresenter',
-		'classPathBreadcrumb',
-		'references',
-		'referenceMethod'
+		'classPathBreadcrumb'
 	],
 	#category : #Rush
 }
+
+{ #category : #adding }
+RushBasicClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
+
+	instMthdsTablePresenter
+		addColumn: ((SpCheckBoxTableColumn title: '' evaluated: [ : im | self selectedInstMethods includes: im ])
+			onActivation: [ : cv | ];
+			onDeactivation: [ : cv |  ];
+			beNotExpandable;
+			width: 20;
+			yourself);
+		addColumn: ((SpStringTableColumn title: 'Name' evaluated: [ : im | im selector asString ])
+			width: 180;
+			yourself)
+]
+
+{ #category : #initialization }
+RushBasicClassBrowser >> browserTitle [ 
+
+	^ 'Basic Class Hierarchy Browser'
+]
+
+{ #category : #initialization }
+RushBasicClassBrowser >> buildOrganizationProtocols: aClass [
+
+	^ aClass
+		  ifNotNil: [
+			  aClass protocols
+				  collect: [ :each | aClass -> each ]
+				  as: OrderedCollection ]
+		  ifNil: [ Array empty ]
+]
 
 { #category : #layout }
 RushBasicClassBrowser >> classesLayout [
@@ -30,27 +55,10 @@ RushBasicClassBrowser >> classesLayout [
 		  yourself
 ]
 
-{ #category : #'private-class side' }
-RushBasicClassBrowser >> connectClassMethodsPresenter [
-
-	classMethods
-		transmitTo: srcCodePresenter
-		transform: [ :aMethod | aMethod ifNotNil: [ aMethod sourceCode ] ifNil: [ '' ] ]
-]
-
 { #category : #initialization }
 RushBasicClassBrowser >> connectClassesPresenter [
 
 	classes transmitTo: classPathBreadcrumb.
-
-	classes
-		transmitTo: classProtocols
-		transform: [ :aClass | self buildOrganizationProtocols: aClass class ]
-		postTransmission: [ :destination :origin |
-		self selectAllProtocolIn: destination ].
-
-	classes transmitTo: classVariables transform: [ :aClass |
-		aClass ifNotNil: [ aClass classVariables ] ifNil: [ Array empty ] ].
 
 	classes
 		transmitTo: instProtocols
@@ -60,19 +68,9 @@ RushBasicClassBrowser >> connectClassesPresenter [
 	classes transmitTo: instVariables transform: [ :aClass |
 		aClass ifNotNil: [ aClass instanceVariables ] ifNil: [ Array empty ] ].
 
-	classes transmitTo: classComment transform: [ :aClass |
-		aClass ifNotNil: [ aClass comment ] ifNil: [ String empty ] ].
-
 	classes transmitTo: classDefinition transform: [ :aClass |
 		aClass ifNotNil: [ aClass definitionString ] ifNil: [ '' ] ].
 
-	classes
-		transmitTo: references
-		transform: [ :aClass |
-			aClass
-				ifNotNil: [ self systemNavigation allReferencesTo: aClass binding ]
-				ifNil: [ Array empty ] ]
-		postTransmission: [ :list | references items: list items ]
 ]
 
 { #category : #'private-instance side' }
@@ -108,6 +106,14 @@ RushBasicClassBrowser >> connectInstProtocolsPresenter [
 ]
 
 { #category : #initialization }
+RushBasicClassBrowser >> connectPresenters [
+
+	self connectClassesPresenter.
+	self connectInstProtocolsPresenter.
+	self connectInstMethodsPresenter.
+]
+
+{ #category : #initialization }
 RushBasicClassBrowser >> defaultClasses [
 
 	^ Smalltalk image allClasses asSortedCollection: [ : a : b | a name < b name ]
@@ -134,19 +140,6 @@ RushBasicClassBrowser >> initializeClassesPresenter [
 		display: [ :class | class name];
 		displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
 		sortingBlock: [ :a :b | a name < b name ]
-]
-
-{ #category : #initialization }
-RushBasicClassBrowser >> initializeCommentPresenter [
-
-	classComment := self newText.
-	classComment 
-		placeholder: 'Class comment';
-		text: '';
-		beNotEditable;
-		addStyle: 'iceTipReadonly';
-		addStyle: 'iceTipText4Lines';
-		beWrapWord
 ]
 
 { #category : #initialization }
@@ -193,14 +186,9 @@ RushBasicClassBrowser >> initializePresenters [
 	self initializeInstVariablesPresenter.
 	self initializeInstMethodsPresenter.
 
-	self initializeClassProtocolsPresenter.
-	self initializeClassVariablesPresenter.
-	self initializeClassMethodsPresenter.
-
 	self initializeCodePresenter.
 	self initializeClassDefinitionPresenter.
-	self initializeCommentPresenter.
-	self initializeReferencesPresenter.
+
 ]
 
 { #category : #layout }
@@ -212,6 +200,32 @@ RushBasicClassBrowser >> instMethodsLayout [
 				yourself) expand: false;
 		  add: instMethods;
 		  yourself
+]
+
+{ #category : #layout }
+RushBasicClassBrowser >> instProtocolsLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: 'Instance Protocols' expand: false;
+		  add: instProtocols;
+		  yourself
+]
+
+{ #category : #layout }
+RushBasicClassBrowser >> instVarsLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: 'Instance Variables' expand: false;
+		  add: instVariables;
+		  yourself
+]
+
+{ #category : #layout }
+RushBasicClassBrowser >> lowerPaneLayout [
+
+	^ SpBoxLayout newLeftToRight
+		add: srcCodePresenter;
+		yourself
 ]
 
 { #category : #opening }
@@ -245,4 +259,21 @@ RushBasicClassBrowser >> selectedInstMethods [
 
 	^ selectedInstMethods
 		ifNil: [ selectedInstMethods := OrderedCollection new ]
+]
+
+{ #category : #layout }
+RushBasicClassBrowser >> upperPaneLayout [
+
+	^ SpBoxLayout newTopToBottom 
+		add: classPathBreadcrumb expand: false;
+		add: (SpBoxLayout newLeftToRight
+			spacing: self spacingBetweenPanes;
+			add: self classesLayout;
+			add: (SpPanedLayout newTopToBottom
+				add: self instProtocolsLayout;
+				add: self instVarsLayout;
+				yourself);
+			add: self instMethodsLayout;
+			yourself);
+		yourself
 ]

@@ -1,6 +1,6 @@
 Class {
 	#name : #RushCompiledCodeBrowser,
-	#superclass : #RushBasicClassBrowser,
+	#superclass : #RushClassBrowser,
 	#instVars : [
 		'bytecodesPresenter',
 		'headerDescription'

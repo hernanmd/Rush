@@ -1,6 +1,6 @@
 Class {
 	#name : #RushASTBrowser,
-	#superclass : #RushBasicClassBrowser,
+	#superclass : #RushClassBrowser,
 	#instVars : [
 		'rbAst'
 	],

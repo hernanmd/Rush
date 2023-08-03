@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #private }
+RushAbstractBrowser class >> menuRushBasicBrowserOn: aBuilder [
+	<worldMenu>
+
+	(aBuilder item: #Rush)
+		parent: #Tools;
+		label: 'Rush Basic Class Browser';
+		icon: (self iconNamed: #catalog);
+		action: [ RushBasicClassBrowser new open ];
+		help: 'Basic Class Hierarchy Browser';
+		order: 626
+]
+
+{ #category : #private }
 RushAbstractBrowser class >> menuRushBrowserOn: aBuilder [
 	<worldMenu>
 
@@ -52,8 +65,7 @@ RushAbstractBrowser >> connectPresenters [
 { #category : #layout }
 RushAbstractBrowser >> defaultLayout [
 
-	^ SpBoxLayout newTopToBottom
-		  spacing: self spacingBetweenPanes;
+	^ SpPanedLayout newTopToBottom
 		  add: self upperPaneLayout;
 		  add: self lowerPaneLayout;
 		  yourself
