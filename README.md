@@ -12,6 +12,11 @@
   - [Version management](#version-management)
 - [License](#license)
 
+
+# Description
+
+Implements multiple browser in Pharo
+
 # Installation
 
 ```smalltalk
@@ -35,11 +40,19 @@ If you want to add the Rush to your Metacello Baselines or Configurations, copy 
 
 # Usage
 
-```smalltalk
-RushBrowser open.
-```
+## Minimal Class Browser
 
-# Description
+```smalltalk
+RushBasicClassBrowser new open.
+```
+<img width="743" alt="Screenshot 2023-08-04 at 14 50 47" src="https://github.com/hernanmd/Rush/assets/4825959/902455b4-941a-42e3-9a5e-cf0dcb1b4fea">
+
+## Slang Browser
+
+```smalltalk
+RushSlangBrowser new open.
+```
+<img width="999" alt="Screenshot 2023-08-04 at 14 48 07" src="https://github.com/hernanmd/Rush/assets/4825959/bae7f3c6-3911-4b7b-be18-7cb500791bf2">
 
 # Contribute
 
@@ -72,7 +85,7 @@ Thus, it should be safe to depend on a fixed major version and moving minor vers
 	
 This software is licensed under the MIT License.
 
-Copyright Hernán Morales Durand, 2022.
+Copyright Hernán Morales Durand, 2023.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
