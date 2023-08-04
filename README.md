@@ -52,7 +52,8 @@ RushBasicClassBrowser new open.
 ```smalltalk
 RushSlangBrowser new open.
 ```
-<img width="999" alt="Screenshot 2023-08-04 at 14 48 07" src="https://github.com/hernanmd/Rush/assets/4825959/bae7f3c6-3911-4b7b-be18-7cb500791bf2">
+<img width="999" alt="Screenshot 2023-08-04 at 14 48 07" src="https://github.com/hernanmd/Rush/assets/4825959/ca5bf47b-e9c8-488b-855c-6b7b6b8d2459">
+
 
 # Contribute
 
