@@ -166,18 +166,6 @@ RushClassBrowser >> initializePresenters [
 ]
 
 { #category : #layout }
-RushClassBrowser >> instMethodsLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  add: (SpBoxLayout newLeftToRight 
-				add: 'Instance Methods' expand: false;
-				add: sendersCheckPresenter expand: false;
-				yourself) expand: false;
-		  add: instMethods;
-		  yourself
-]
-
-{ #category : #layout }
 RushClassBrowser >> lowerPaneLayout [
 
 	^ SpPanedLayout newLeftToRight

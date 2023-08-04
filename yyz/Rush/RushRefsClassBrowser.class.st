@@ -3,7 +3,8 @@ Class {
 	#superclass : #RushClassBrowser,
 	#instVars : [
 		'references',
-		'referenceMethod'
+		'referenceMethod',
+		'sendersCheckPresenter'
 	],
 	#category : #Rush
 }
@@ -66,6 +67,16 @@ RushRefsClassBrowser >> displaySendersSetting [
 ]
 
 { #category : #initialization }
+RushRefsClassBrowser >> initializeInstMethodsPresenter [
+
+	super initializeInstMethodsPresenter.
+	sendersCheckPresenter := self newCheckBox
+		label: 'Senders';
+		state: RushSettings computeSenders;
+		whenChangedDo: [ : c | RushSettings computeSenders: c ].
+]
+
+{ #category : #initialization }
 RushRefsClassBrowser >> initializePresenters [ 
 
 	super initializePresenters.
@@ -81,6 +92,18 @@ RushRefsClassBrowser >> initializeReferencesPresenter [
 		displayIcon: [ :aClass | self iconNamed: aClass systemIconName ].
 		
 	referenceMethod := self newCode.
+]
+
+{ #category : #layout }
+RushRefsClassBrowser >> instMethodsLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: (SpBoxLayout newLeftToRight 
+				add: 'Instance Methods' expand: false;
+				add: sendersCheckPresenter expand: false;
+				yourself) expand: false;
+		  add: instMethods;
+		  yourself
 ]
 
 { #category : #layout }

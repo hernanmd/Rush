@@ -8,7 +8,6 @@ Class {
 		'instVariables',
 		'selectedInstMethods',
 		'classDefinition',
-		'sendersCheckPresenter',
 		'classPathBreadcrumb'
 	],
 	#category : #Rush
@@ -144,11 +143,6 @@ RushBasicClassBrowser >> initializeClassesPresenter [
 
 { #category : #initialization }
 RushBasicClassBrowser >> initializeInstMethodsPresenter [
-
-	sendersCheckPresenter := self newCheckBox
-		label: 'Senders';
-		state: RushSettings computeSenders;
-		whenChangedDo: [ : c | RushSettings computeSenders: c ].
 
 	instMethods := self newTable.
 	self addInstanceMethodsColumnsTo: instMethods.

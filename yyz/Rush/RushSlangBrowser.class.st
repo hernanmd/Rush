@@ -2,7 +2,8 @@ Class {
 	#name : #RushSlangBrowser,
 	#superclass : #RushBasicClassBrowser,
 	#instVars : [
-		'translatedSourcePresenter'
+		'translatedSourcePresenter',
+		'inlineCheckPresenter'
 	],
 	#category : #Rush
 }
@@ -30,7 +31,7 @@ RushSlangBrowser >> configureCodeGeneratorFor: aMethod [
 	cg pluginClass: mClass.
 	cg vmClass: mClass.
 	cg addClass: mClass.		
-	cg doInlining: true.	
+	cg doInlining: RushSettings inlineMethods.	
 	^ cg
 ]
 
@@ -47,11 +48,33 @@ RushSlangBrowser >> connectInstMethodsPresenter [
 ]
 
 { #category : #initialization }
+RushSlangBrowser >> initializeInstMethodsPresenter [
+
+	super initializeInstMethodsPresenter.
+	inlineCheckPresenter := self newCheckBox
+		label: 'Inline';
+		state: RushSettings inlineMethods;
+		whenChangedDo: [ : c | RushSettings inlineMethods: c ].
+]
+
+{ #category : #initialization }
 RushSlangBrowser >> initializePresenters [
 
 	super initializePresenters.
 	translatedSourcePresenter := self newCode.
 	classes items: self slangClasses
+]
+
+{ #category : #layout }
+RushSlangBrowser >> instMethodsLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: (SpBoxLayout newLeftToRight 
+				add: 'Instance Methods' expand: false;
+				add: inlineCheckPresenter expand: false;
+				yourself) expand: false;
+		  add: instMethods;
+		  yourself
 ]
 
 { #category : #layout }
