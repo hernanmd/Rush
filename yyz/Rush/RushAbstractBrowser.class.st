@@ -21,7 +21,7 @@ RushAbstractBrowser class >> menuRushBasicBrowserOn: aBuilder [
 RushAbstractBrowser class >> menuRushBrowserOn: aBuilder [
 	<worldMenu>
 
-	(aBuilder item: #Rush)
+	(aBuilder item: #RushCB)
 		parent: #Tools;
 		label: 'Rush Class Browser';
 		icon: (self iconNamed: #catalog);
@@ -41,6 +41,19 @@ RushAbstractBrowser class >> menuRushPBBrowserOn: aBuilder [
 		action: [ RushPackagesBrowser new open ];
 		help: 'Rush Class Hierarchy Browser';
 		order: 628
+]
+
+{ #category : #private }
+RushAbstractBrowser class >> menuRushSlangBrowserOn: aBuilder [
+	<worldMenu>
+
+	(aBuilder item: #RushSB)
+		parent: #Tools;
+		label: 'Rush Slang Browser';
+		icon: (self iconNamed: #catalog);
+		action: [ RushSlangBrowser new open ];
+		help: 'Slang Browser';
+		order: 625
 ]
 
 { #category : #'instance creation' }

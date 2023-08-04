@@ -19,7 +19,7 @@ RushDruidBrowser class >> menuRushPBBrowserOn: aBuilder [
 		icon: (self iconNamed: #catalog);
 		action: [ RushDruidBrowser new open ];
 		help: 'Rush Druid Browser';
-		order: 628
+		order: 630
 ]
 
 { #category : #opening }

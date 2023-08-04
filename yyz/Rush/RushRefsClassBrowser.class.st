@@ -8,6 +8,16 @@ Class {
 	#category : #Rush
 }
 
+{ #category : #'private-instance side' }
+RushRefsClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
+
+	(super addInstanceMethodsColumnsTo: instMthdsTablePresenter)
+		addColumn: ((SpStringTableColumn title: 'Senders' evaluated: [ : im | self displaySendersIn: im ])
+			width: 30;
+			beNotExpandable;
+			yourself)
+]
+
 { #category : #initialization }
 RushRefsClassBrowser >> connectClassesPresenter [ 
 
@@ -59,7 +69,6 @@ RushRefsClassBrowser >> displaySendersSetting [
 RushRefsClassBrowser >> initializePresenters [ 
 
 	super initializePresenters.
-	self initializeCommentPresenter.
 	self initializeReferencesPresenter.
 ]
 

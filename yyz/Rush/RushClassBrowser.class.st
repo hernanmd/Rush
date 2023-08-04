@@ -23,10 +23,6 @@ RushClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
 			yourself);
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: [ : im | im selector asString ])
 			width: 180;
-			yourself);
-		addColumn: ((SpStringTableColumn title: 'Senders' evaluated: [ : im | self displaySendersIn: im ])
-			width: 30;
-			beNotExpandable;
 			yourself)
 ]
 
@@ -104,7 +100,7 @@ RushClassBrowser >> connectClassesPresenter [
 RushClassBrowser >> connectPresenters [
 
 	super connectPresenters.
-	
+
 	self connectClassMethodsPresenter.
 	self connectClassProtocolsPresenter.
 
@@ -166,6 +162,7 @@ RushClassBrowser >> initializePresenters [
 	self initializeClassProtocolsPresenter.
 	self initializeClassVariablesPresenter.
 	self initializeClassMethodsPresenter.
+	self initializeCommentPresenter.
 ]
 
 { #category : #layout }
