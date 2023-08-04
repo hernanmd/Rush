@@ -45,7 +45,7 @@ If you want to add the Rush to your Metacello Baselines or Configurations, copy 
 ```smalltalk
 RushBasicClassBrowser new open.
 ```
-<img width="743" alt="Screenshot 2023-08-04 at 14 50 47" src="https://github.com/hernanmd/Rush/assets/4825959/902455b4-941a-42e3-9a5e-cf0dcb1b4fea">
+<img width="761" alt="Screenshot 2023-08-04 at 15 17 51" src="https://github.com/hernanmd/Rush/assets/4825959/5b87d105-5415-4d3c-ad7e-14e26da4bceb">
 
 ## Slang Browser
 
@@ -53,7 +53,6 @@ RushBasicClassBrowser new open.
 RushSlangBrowser new open.
 ```
 <img width="999" alt="Screenshot 2023-08-04 at 14 48 07" src="https://github.com/hernanmd/Rush/assets/4825959/ca5bf47b-e9c8-488b-855c-6b7b6b8d2459">
-
 
 # Contribute
 
