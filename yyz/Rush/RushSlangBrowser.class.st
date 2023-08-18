@@ -14,6 +14,14 @@ RushSlangBrowser >> browserTitle [
 	^ 'Slang Browser'
 ]
 
+{ #category : #initialization }
+RushSlangBrowser >> codeGeneratorClasses [
+	"Answer a <Collection> of Slang classes which can generate code through a code generator"
+	
+	^ SlangClass withAllSubclasses
+		select: [ : c | c respondsTo: #codeGeneratorClass ]
+]
+
 { #category : #private }
 RushSlangBrowser >> configureCodeGeneratorFor: aMethod [ 
 
@@ -30,7 +38,9 @@ RushSlangBrowser >> configureCodeGeneratorFor: aMethod [
 	
 	cg pluginClass: mClass.
 	cg vmClass: mClass.
-	cg addClass: mClass.		
+	cg addClass: mClass.
+	cg inferTypes;
+		prepareMethods.
 	cg doInlining: RushSettings inlineMethods.	
 	^ cg
 ]
@@ -100,7 +110,7 @@ RushSlangBrowser >> slangClasses [
 	
 	^ (SortedCollection 
 		sortUsing: [ : c1 : c2 | c1 name < c2 name ])
-			addAll: SlangClass withAllSubclasses;
+			addAll: self codeGeneratorClasses;
 			yourself
 
 ]
