@@ -3,10 +3,20 @@ Class {
 	#superclass : #RushBasicClassBrowser,
 	#instVars : [
 		'packages',
-		'packagesPresenter'
+		'packagesPresenter',
+		'allClasses',
+		'extendedClassesPresenter',
+		'traitsPresenter',
+		'unsentsPresenter'
 	],
 	#category : #Rush
 }
+
+{ #category : #initialization }
+RushPackagesBrowser >> browserTitle [ 
+
+	^ 'Packages Browser'
+]
 
 { #category : #layout }
 RushPackagesBrowser >> classTemplateFor: aPackage [
@@ -30,6 +40,27 @@ RushPackagesBrowser >> connectPackagesPresenter [
 				ifNil: [ #(  ) ] ].
 
 	packagesPresenter
+		transmitTo: extendedClassesPresenter
+		transform: [ :aPackage |
+			aPackage
+				ifNotNil: [ aPackage extendedClasses asArray ]
+				ifNil: [ #(  ) ] ].
+			
+	packagesPresenter
+		transmitTo: traitsPresenter
+		transform: [ :aPackage |
+			aPackage
+				ifNotNil: [ aPackage asRingDefinition traits asArray ]
+				ifNil: [ #(  ) ] ].
+
+	classes
+		transmitTo: unsentsPresenter
+		transform: [ : aClass |
+			aClass
+				ifNotNil: [ aClass allUnsentMessages asArray ]
+				ifNil: [ #(  ) ] ].
+
+	packagesPresenter
 		transmitTo: classDefinition
 		transform: [ :aPackage | self classTemplateFor: aPackage ]
 ]
@@ -50,7 +81,7 @@ RushPackagesBrowser >> defaultClasses [
 { #category : #initialization }
 RushPackagesBrowser >> defaultPackages [
 
-	^ RPackageOrganizer default packages
+	^ RPackageOrganizer default packages reject: #isTestPackage
 ]
 
 { #category : #initialization }
@@ -61,7 +92,23 @@ RushPackagesBrowser >> initializePackagesPresenter [
 		display: [ :package | package name ];
 		displayIcon: [ self iconNamed: #package ];
 		sortingBlock: [ :a :b | a name < b name ];
-		items: self packages
+		items: self packages.
+		
+	extendedClassesPresenter := self newFilteringList.
+	extendedClassesPresenter listPresenter
+		display: [ :item | item name ];
+		displayIcon: [ self iconNamed: #class ];
+		sortingBlock: [ :a :b | a name < b name ].
+
+	traitsPresenter := self newFilteringList.
+	traitsPresenter listPresenter
+		display: [ :item | item name ];
+		displayIcon: [ self iconNamed: #trait ];
+		sortingBlock: [ :a :b | a name < b name ].
+		
+	unsentsPresenter := self newFilteringList.
+	unsentsPresenter listPresenter
+		sortingBlock: [ :a :b | a < b ].
 ]
 
 { #category : #initialization }
@@ -84,6 +131,42 @@ RushPackagesBrowser >> openOnMethod: aMethod [
 
 	packagesPresenter selectItem: (RPackageOrganizer default packageOf: aMethod methodClass) packageName.
 	super openOnMethod: aMethod.
+]
+
+{ #category : #layout }
+RushPackagesBrowser >> packageAllClassesLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: 'All Classes' expand: false;
+		  add: classes;
+		  yourself
+]
+
+{ #category : #layout }
+RushPackagesBrowser >> packageExtendedClassesLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: 'Extended Classes' expand: false;
+		  add: extendedClassesPresenter;
+		  yourself
+]
+
+{ #category : #layout }
+RushPackagesBrowser >> packageTraitsLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: 'Traits' expand: false;
+		  add: traitsPresenter;
+		  yourself
+]
+
+{ #category : #layout }
+RushPackagesBrowser >> packageUnsentLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: 'Unsents' expand: false;
+		  add: unsentsPresenter;
+		  yourself
 ]
 
 { #category : #initialization }
@@ -110,21 +193,10 @@ RushPackagesBrowser >> upperPaneLayout [
 		add: (SpBoxLayout newLeftToRight
 			spacing: self spacingBetweenPanes;
 			add: self packagesLayout;
-			add: self classesLayout;
-
-			add: (SpBoxLayout newTopToBottom
-				spacing: self spacingBetweenPanes;
-				add: self classProtocolsLayout;
-				add: self classVarsLayout;
-				yourself);
-			add: self classMethodsLayout;
-
-			add: (SpBoxLayout newTopToBottom
-				spacing: self spacingBetweenPanes;
-				add: self instProtocolsLayout;
-				add: self instVarsLayout;
-				yourself);
-			add: self instMethodsLayout;
+			add: self packageAllClassesLayout;
+			add: self packageExtendedClassesLayout;
+			add: self packageTraitsLayout;
+			add: self packageUnsentLayout;
 			yourself);
 		yourself
 ]
