@@ -23,7 +23,7 @@ Implements multiple browser in Pharo
 EpMonitor disableDuring: [ 
 	Metacello new	
 		baseline: 'Rush';	
-		repository: 'github://hernanmd/Rush/yyz';	
+		repository: 'github://hernanmd/Rush/src';	
 		load ].
 ```
 
@@ -34,7 +34,7 @@ If you want to add the Rush to your Metacello Baselines or Configurations, copy 
 	" ... "
 	spec
 		baseline: 'Rush' 
-		with: [ spec repository: 'github://hernanmd/Rush/yyz' ];
+		with: [ spec repository: 'github://hernanmd/Rush/src' ];
 	" ... "
 ```
 
