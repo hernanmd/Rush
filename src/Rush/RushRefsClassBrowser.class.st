@@ -1,15 +1,16 @@
 Class {
-	#name : #RushRefsClassBrowser,
-	#superclass : #RushClassBrowser,
+	#name : 'RushRefsClassBrowser',
+	#superclass : 'RushClassBrowser',
 	#instVars : [
 		'references',
 		'referenceMethod',
 		'sendersCheckPresenter'
 	],
-	#category : #Rush
+	#category : 'Rush',
+	#package : 'Rush'
 }
 
-{ #category : #'private-instance side' }
+{ #category : 'private-instance side' }
 RushRefsClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
 
 	(super addInstanceMethodsColumnsTo: instMthdsTablePresenter)
@@ -19,7 +20,7 @@ RushRefsClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
 			yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushRefsClassBrowser >> connectClassesPresenter [ 
 
 	super connectClassesPresenter.
@@ -32,14 +33,14 @@ RushRefsClassBrowser >> connectClassesPresenter [
 		postTransmission: [ :list | references items: list items ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushRefsClassBrowser >> connectPresenters [ 
 
 	super connectPresenters.
 	self connectReferencesPresenter
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushRefsClassBrowser >> connectReferencesPresenter [
 
 	references
@@ -52,7 +53,7 @@ RushRefsClassBrowser >> connectReferencesPresenter [
 				ifNil: [ '' ] ]
 ]
 
-{ #category : #'private-instance side' }
+{ #category : 'private-instance side' }
 RushRefsClassBrowser >> displaySendersIn: im [
 
 	^ self displaySendersSetting
@@ -60,13 +61,13 @@ RushRefsClassBrowser >> displaySendersIn: im [
 		ifFalse: [ 'NC' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushRefsClassBrowser >> displaySendersSetting [
 
 	^ RushSettings computeSenders
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushRefsClassBrowser >> initializeInstMethodsPresenter [
 
 	super initializeInstMethodsPresenter.
@@ -76,14 +77,14 @@ RushRefsClassBrowser >> initializeInstMethodsPresenter [
 		whenChangedDo: [ : c | RushSettings computeSenders: c ].
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushRefsClassBrowser >> initializePresenters [ 
 
 	super initializePresenters.
 	self initializeReferencesPresenter.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushRefsClassBrowser >> initializeReferencesPresenter [
 
 	references := self newFilteringList.
@@ -94,7 +95,7 @@ RushRefsClassBrowser >> initializeReferencesPresenter [
 	referenceMethod := self newCode.
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushRefsClassBrowser >> instMethodsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -106,7 +107,7 @@ RushRefsClassBrowser >> instMethodsLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushRefsClassBrowser >> lowerPaneLayout [
 
 	^ SpPanedLayout newLeftToRight

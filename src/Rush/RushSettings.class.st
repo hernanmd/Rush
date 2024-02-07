@@ -1,34 +1,35 @@
 Class {
-	#name : #RushSettings,
-	#superclass : #Object,
+	#name : 'RushSettings',
+	#superclass : 'Object',
 	#classVars : [
 		'ComputeSenders',
 		'InlineMethods'
 	],
-	#category : #Rush
+	#category : 'Rush',
+	#package : 'Rush'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushSettings class >> computeSenders [
 
 	^ ComputeSenders
 		ifNil: [ false ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushSettings class >> computeSenders: aBoolean [
 
 	ComputeSenders := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushSettings class >> inlineMethods [
 
 	^ InlineMethods
 		ifNil: [ true ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushSettings class >> inlineMethods: aBoolean [
 
 	InlineMethods := aBoolean

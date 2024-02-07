@@ -1,20 +1,21 @@
 Class {
-	#name : #RushASTBrowser,
-	#superclass : #RushClassBrowser,
+	#name : 'RushASTBrowser',
+	#superclass : 'RushClassBrowser',
 	#instVars : [
 		'rbAst'
 	],
-	#category : #Rush
+	#category : 'Rush',
+	#package : 'Rush'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 RushASTBrowser class >> open [ 
 	<script>
 	
 	^ self new open
 ]
 
-{ #category : #'private-instance side' }
+{ #category : 'private-instance side' }
 RushASTBrowser >> connectInstMethodsPresenter [
 
 	super connectInstMethodsPresenter.
@@ -28,14 +29,14 @@ RushASTBrowser >> connectInstMethodsPresenter [
 		postTransmission: [ : m | rbAst expandAll ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushASTBrowser >> initializePresenters [
 
 	super initializePresenters.
 	self initializeRBAst
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushASTBrowser >> initializeRBAst [
 
 	rbAst := self newTree.
@@ -53,7 +54,7 @@ RushASTBrowser >> initializeRBAst [
 		children: [ :each | each children ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushASTBrowser >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
@@ -61,13 +62,39 @@ RushASTBrowser >> initializeWindow: aWindowPresenter [
 		initialExtent: 800 @ 600
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushASTBrowser >> lowerPaneLayout [
 
 	^  SpBoxLayout newLeftToRight
 			spacing: self spacingBetweenPanes;
 			add: classComment;
 			add: srcCodePresenter;
-			add: rbAst;
 			yourself
+]
+
+{ #category : 'layout' }
+RushASTBrowser >> upperPaneLayout [
+
+	^ SpBoxLayout newTopToBottom 
+		add: classPathBreadcrumb expand: false;
+		add: (SpBoxLayout newLeftToRight
+			spacing: self spacingBetweenPanes;
+			add: self classesLayout;
+
+			add: (SpBoxLayout newTopToBottom
+				spacing: self spacingBetweenPanes;
+				add: self classVarsLayout;
+				add: self classProtocolsLayout;				
+				add: self classMethodsLayout;
+				yourself);
+
+			add: (SpBoxLayout newTopToBottom
+				spacing: self spacingBetweenPanes;
+				add: self instProtocolsLayout;
+				add: self instVarsLayout;
+				yourself);
+			add: self instMethodsLayout;
+			add: rbAst;			
+			yourself);
+		yourself
 ]

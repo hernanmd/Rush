@@ -1,15 +1,16 @@
 Class {
-	#name : #RushDruidBrowser,
-	#superclass : #RushBasicClassBrowser,
+	#name : 'RushDruidBrowser',
+	#superclass : 'RushBasicClassBrowser',
 	#instVars : [
 		'druidPresenter',
 		'methodCompiler',
 		'currentInstalledClass'
 	],
-	#category : #Rush
+	#category : 'Rush-Druid',
+	#package : 'Rush-Druid'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 RushDruidBrowser class >> menuRushPBBrowserOn: aBuilder [
 	<worldMenu>
 
@@ -22,7 +23,7 @@ RushDruidBrowser class >> menuRushPBBrowserOn: aBuilder [
 		order: 630
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 RushDruidBrowser class >> openOn: aClass [ 
 
 	self new
@@ -30,7 +31,7 @@ RushDruidBrowser class >> openOn: aClass [
 		open
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 RushDruidBrowser >> connectInstMethodsPresenter [
 
 	super connectInstMethodsPresenter.
@@ -49,7 +50,7 @@ RushDruidBrowser >> connectInstMethodsPresenter [
 					self renderCfg: aCanvas for: selection selectedItem ] ] ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 RushDruidBrowser >> createClassNamed: aClassName instVars: instVarCollection [
 
 	^ self class classInstaller make: [ :aClassBuilder |
@@ -60,19 +61,19 @@ RushDruidBrowser >> createClassNamed: aClassName instVars: instVarCollection [
 			package: 'ToDelete' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushDruidBrowser >> currentInstalledClass [
 
 	^ currentInstalledClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushDruidBrowser >> currentInstalledClass: anObject [
 
 	currentInstalledClass := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushDruidBrowser >> defaultMethodCompiler [
 
 	^ DRMethodCompilerCompiler new
@@ -81,25 +82,25 @@ RushDruidBrowser >> defaultMethodCompiler [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushDruidBrowser >> druidPresenter [
 
 	^ druidPresenter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushDruidBrowser >> druidPresenter: anObject [
 
 	druidPresenter := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushDruidBrowser >> initializeDruidPresenter [
 
 	druidPresenter := self newRoassal
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushDruidBrowser >> initializePresenters [
 
 	super initializePresenters.
@@ -107,7 +108,7 @@ RushDruidBrowser >> initializePresenters [
 		initializeDruidPresenter
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushDruidBrowser >> lowerPaneLayout [
 
 	^ SpPanedLayout newLeftToRight
@@ -120,20 +121,20 @@ RushDruidBrowser >> lowerPaneLayout [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushDruidBrowser >> methodCompiler [
 
 	^ methodCompiler
 		ifNil: [ methodCompiler := self defaultMethodCompiler ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushDruidBrowser >> methodCompiler: anObject [
 
 	methodCompiler := anObject
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 RushDruidBrowser >> renderCfg: aCanvas for: aMethod [
 
 	| canvasController |
@@ -144,7 +145,7 @@ RushDruidBrowser >> renderCfg: aCanvas for: aMethod [
 	aCanvas @ canvasController
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 RushDruidBrowser >> updateInterpreterFor: aClass [
 
 	| newClassName |
@@ -162,7 +163,7 @@ RushDruidBrowser >> updateInterpreterFor: aClass [
 	^ { aClass }
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushDruidBrowser >> upperPaneLayout [
 
 	^ SpBoxLayout newTopToBottom 

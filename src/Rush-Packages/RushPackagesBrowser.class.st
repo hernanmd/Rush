@@ -1,6 +1,6 @@
 Class {
-	#name : #RushPackagesBrowser,
-	#superclass : #RushBasicClassBrowser,
+	#name : 'RushPackagesBrowser',
+	#superclass : 'RushBasicClassBrowser',
 	#instVars : [
 		'packages',
 		'packagesPresenter',
@@ -9,16 +9,17 @@ Class {
 		'traitsPresenter',
 		'unsentsPresenter'
 	],
-	#category : #Rush
+	#category : 'Rush-Packages',
+	#package : 'Rush-Packages'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushPackagesBrowser >> browserTitle [ 
 
 	^ 'Packages Browser'
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushPackagesBrowser >> classTemplateFor: aPackage [
 
 	aPackage ifNil: [ ^ '' ].
@@ -29,7 +30,7 @@ RushPackagesBrowser >> classTemplateFor: aPackage [
 	package: ''' , aPackage name , ''' '
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushPackagesBrowser >> connectPackagesPresenter [
 
 	packagesPresenter
@@ -65,26 +66,26 @@ RushPackagesBrowser >> connectPackagesPresenter [
 		transform: [ :aPackage | self classTemplateFor: aPackage ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushPackagesBrowser >> connectPresenters [
 
 	self connectPackagesPresenter.
 	super connectPresenters.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushPackagesBrowser >> defaultClasses [
 
 	^ Array empty
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushPackagesBrowser >> defaultPackages [
 
 	^ RPackageOrganizer default packages reject: #isTestPackage
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushPackagesBrowser >> initializePackagesPresenter [
 
 	packagesPresenter := self newFilteringList.
@@ -111,14 +112,14 @@ RushPackagesBrowser >> initializePackagesPresenter [
 		sortingBlock: [ :a :b | a < b ].
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushPackagesBrowser >> initializePresenters [ 
 
 	super initializePresenters.
 	self initializePackagesPresenter.
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 RushPackagesBrowser >> openOnClass: aClass [
 
 	packagesPresenter items: self defaultPackages.
@@ -126,14 +127,14 @@ RushPackagesBrowser >> openOnClass: aClass [
 	super openOnClass: aClass
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 RushPackagesBrowser >> openOnMethod: aMethod [ 
 
 	packagesPresenter selectItem: (RPackageOrganizer default packageOf: aMethod methodClass) packageName.
 	super openOnMethod: aMethod.
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushPackagesBrowser >> packageAllClassesLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -142,7 +143,7 @@ RushPackagesBrowser >> packageAllClassesLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushPackagesBrowser >> packageExtendedClassesLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -151,7 +152,7 @@ RushPackagesBrowser >> packageExtendedClassesLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushPackagesBrowser >> packageTraitsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -160,7 +161,7 @@ RushPackagesBrowser >> packageTraitsLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushPackagesBrowser >> packageUnsentLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -169,14 +170,14 @@ RushPackagesBrowser >> packageUnsentLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushPackagesBrowser >> packages [
 
 	^ packages
 		ifNil: [ packages := self defaultPackages ]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushPackagesBrowser >> packagesLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -185,7 +186,7 @@ RushPackagesBrowser >> packagesLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushPackagesBrowser >> upperPaneLayout [
 
 	^ SpBoxLayout newTopToBottom 

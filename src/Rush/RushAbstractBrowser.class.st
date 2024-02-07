@@ -1,10 +1,11 @@
 Class {
-	#name : #RushAbstractBrowser,
-	#superclass : #SpPresenter,
-	#category : #Rush
+	#name : 'RushAbstractBrowser',
+	#superclass : 'SpPresenter',
+	#category : 'Rush',
+	#package : 'Rush'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 RushAbstractBrowser class >> menuRushBasicBrowserOn: aBuilder [
 	<worldMenu>
 
@@ -17,7 +18,7 @@ RushAbstractBrowser class >> menuRushBasicBrowserOn: aBuilder [
 		order: 626
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 RushAbstractBrowser class >> menuRushBrowserOn: aBuilder [
 	<worldMenu>
 
@@ -30,7 +31,7 @@ RushAbstractBrowser class >> menuRushBrowserOn: aBuilder [
 		order: 627
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 RushAbstractBrowser class >> menuRushPBBrowserOn: aBuilder [
 	<worldMenu>
 
@@ -43,7 +44,7 @@ RushAbstractBrowser class >> menuRushPBBrowserOn: aBuilder [
 		order: 628
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 RushAbstractBrowser class >> menuRushSlangBrowserOn: aBuilder [
 	<worldMenu>
 
@@ -56,26 +57,26 @@ RushAbstractBrowser class >> menuRushSlangBrowserOn: aBuilder [
 		order: 625
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 RushAbstractBrowser class >> open [ 
 	<script>
 	
 	^ self new open
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushAbstractBrowser >> browserTitle [
 		
 	self shouldBeImplemented
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushAbstractBrowser >> connectPresenters [
 
 	self subclassResponsibility
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushAbstractBrowser >> defaultLayout [
 
 	^ SpPanedLayout newTopToBottom
@@ -84,7 +85,7 @@ RushAbstractBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushAbstractBrowser >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
@@ -93,19 +94,19 @@ RushAbstractBrowser >> initializeWindow: aWindowPresenter [
 		centered
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushAbstractBrowser >> lowerPaneLayout [
 
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushAbstractBrowser >> spacingBetweenPanes [
 	
 	^ 5
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushAbstractBrowser >> upperPaneLayout [
 
 	self subclassResponsibility

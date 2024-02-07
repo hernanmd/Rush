@@ -1,6 +1,6 @@
-Extension { #name : #Behavior }
+Extension { #name : 'Behavior' }
 
-{ #category : #'*Rush' }
+{ #category : '*Rush' }
 Behavior >> asRushSelectionIn: aRushBrowser [
 
 	aRushBrowser openOnClass: self

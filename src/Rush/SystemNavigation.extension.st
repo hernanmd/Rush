@@ -1,6 +1,6 @@
-Extension { #name : #SystemNavigation }
+Extension { #name : 'SystemNavigation' }
 
-{ #category : #'*Rush' }
+{ #category : '*Rush' }
 SystemNavigation >> rushBrowse: aClass [
 
 	RushDruidBrowser openOn: aClass

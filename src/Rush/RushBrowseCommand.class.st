@@ -1,34 +1,35 @@
 Class {
-	#name : #RushBrowseCommand,
-	#superclass : #StInspectorBrowseSelectedCommand,
-	#category : #Rush
+	#name : 'RushBrowseCommand',
+	#superclass : 'StInspectorBrowseSelectedCommand',
+	#category : 'Rush',
+	#package : 'Rush'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 RushBrowseCommand class >> defaultDescription [
 
 	^ 'Browse with Rush'
 ]
 
-{ #category : #deafult }
+{ #category : 'deafult' }
 RushBrowseCommand class >> defaultIconName [
 
 	^ #hierarchy
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 RushBrowseCommand class >> defaultName [ 
 
 	^ 'Rush Browse'
 ]
 
-{ #category : #documentation }
+{ #category : 'documentation' }
 RushBrowseCommand class >> documentContextRequiredSelectors [
 
 	^ super documentContextRequiredSelectors, #(selectedObject)
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 RushBrowseCommand >> execute [ 
 
 	self context systemNavigation rushBrowse: self interestingObject

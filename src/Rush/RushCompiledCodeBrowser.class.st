@@ -1,21 +1,22 @@
 Class {
-	#name : #RushCompiledCodeBrowser,
-	#superclass : #RushClassBrowser,
+	#name : 'RushCompiledCodeBrowser',
+	#superclass : 'RushClassBrowser',
 	#instVars : [
 		'bytecodesPresenter',
 		'headerDescription'
 	],
-	#category : #Rush
+	#category : 'Rush',
+	#package : 'Rush'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 RushCompiledCodeBrowser class >> open [ 
 	<script>
 	
 	^ self new open
 ]
 
-{ #category : #'private-instance side' }
+{ #category : 'private-instance side' }
 RushCompiledCodeBrowser >> connectInstMethodsPresenter [
 
 	super connectInstMethodsPresenter.
@@ -35,7 +36,7 @@ RushCompiledCodeBrowser >> connectInstMethodsPresenter [
 				ifNotNil: [ aMethod headerDescription ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushCompiledCodeBrowser >> initializeBytecodePresenter [
 
 	bytecodesPresenter := self newList.
@@ -43,7 +44,7 @@ RushCompiledCodeBrowser >> initializeBytecodePresenter [
 		items: OrderedCollection new
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushCompiledCodeBrowser >> initializeHeaderPresenter [
 
 	headerDescription := self newText.
@@ -56,7 +57,7 @@ RushCompiledCodeBrowser >> initializeHeaderPresenter [
 		beWrapWord
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushCompiledCodeBrowser >> initializePresenters [
 
 	super initializePresenters.
@@ -65,7 +66,7 @@ RushCompiledCodeBrowser >> initializePresenters [
 		initializeHeaderPresenter
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushCompiledCodeBrowser >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
@@ -73,7 +74,7 @@ RushCompiledCodeBrowser >> initializeWindow: aWindowPresenter [
 		initialExtent: 800 @ 600
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushCompiledCodeBrowser >> lowerPaneLayout [
 
 	^ SpPanedLayout newLeftToRight

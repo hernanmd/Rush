@@ -1,6 +1,6 @@
 Class {
-	#name : #RushClassBrowser,
-	#superclass : #RushBasicClassBrowser,
+	#name : 'RushClassBrowser',
+	#superclass : 'RushBasicClassBrowser',
 	#instVars : [
 		'classProtocols',
 		'classMethods',
@@ -8,10 +8,11 @@ Class {
 		'selectedClsVars',
 		'classComment'
 	],
-	#category : #Rush
+	#category : 'Rush',
+	#package : 'Rush'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
 
 	instMthdsTablePresenter
@@ -26,7 +27,7 @@ RushClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
 			yourself)
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushClassBrowser >> classMethodsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -35,7 +36,7 @@ RushClassBrowser >> classMethodsLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushClassBrowser >> classProtocolsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -44,7 +45,7 @@ RushClassBrowser >> classProtocolsLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushClassBrowser >> classVarsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -53,7 +54,7 @@ RushClassBrowser >> classVarsLayout [
 		  yourself
 ]
 
-{ #category : #'private-class side' }
+{ #category : 'private-class side' }
 RushClassBrowser >> connectClassMethodsPresenter [
 
 	classMethods
@@ -61,7 +62,7 @@ RushClassBrowser >> connectClassMethodsPresenter [
 		transform: [ :aMethod | aMethod ifNotNil: [ aMethod sourceCode ] ifNil: [ '' ] ]
 ]
 
-{ #category : #'private-class side' }
+{ #category : 'private-class side' }
 RushClassBrowser >> connectClassProtocolsPresenter [
 
 	classProtocols
@@ -79,7 +80,7 @@ RushClassBrowser >> connectClassProtocolsPresenter [
 		transform: [ :aPair | aPair ifNotNil: [ aPair key sourceCodeTemplate ] ifNil: [ '' ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushClassBrowser >> connectClassesPresenter [ 
 
 	super connectClassesPresenter.
@@ -96,7 +97,7 @@ RushClassBrowser >> connectClassesPresenter [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushClassBrowser >> connectPresenters [
 
 	super connectPresenters.
@@ -106,7 +107,7 @@ RushClassBrowser >> connectPresenters [
 
 ]
 
-{ #category : #'private-class side' }
+{ #category : 'private-class side' }
 RushClassBrowser >> initializeClassMethodsPresenter [
 
 	classMethods := self newList.
@@ -115,7 +116,7 @@ RushClassBrowser >> initializeClassMethodsPresenter [
 		sortingBlock: [ :a :b | a selector  < b selector ]
 ]
 
-{ #category : #'private-class side' }
+{ #category : 'private-class side' }
 RushClassBrowser >> initializeClassProtocolsPresenter [
 
 	classProtocols := self newFilteringList.
@@ -124,7 +125,7 @@ RushClassBrowser >> initializeClassProtocolsPresenter [
 		sortingBlock: [ :a :b | a value name < b value name ]
 ]
 
-{ #category : #'private-class side' }
+{ #category : 'private-class side' }
 RushClassBrowser >> initializeClassVariablesPresenter [
 
 	classVariables := self newTable.
@@ -142,7 +143,7 @@ RushClassBrowser >> initializeClassVariablesPresenter [
 		sortingBlock: [ :a :b | a key < b key ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushClassBrowser >> initializeCommentPresenter [
 
 	classComment := self newText.
@@ -155,7 +156,7 @@ RushClassBrowser >> initializeCommentPresenter [
 		beWrapWord
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushClassBrowser >> initializePresenters [ 
 
 	super initializePresenters.
@@ -165,7 +166,7 @@ RushClassBrowser >> initializePresenters [
 	self initializeCommentPresenter.
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushClassBrowser >> lowerPaneLayout [
 
 	^ SpPanedLayout newLeftToRight
@@ -182,14 +183,14 @@ RushClassBrowser >> lowerPaneLayout [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushClassBrowser >> selectedClsVars [
 
 	^ selectedClsVars
 		ifNil: [ selectedClsVars := OrderedCollection new ]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushClassBrowser >> upperPaneLayout [
 
 	^ SpBoxLayout newTopToBottom 

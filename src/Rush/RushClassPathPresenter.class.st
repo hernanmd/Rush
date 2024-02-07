@@ -1,23 +1,24 @@
 Class {
-	#name : #RushClassPathPresenter,
-	#superclass : #SpPresenter,
+	#name : 'RushClassPathPresenter',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'topClass'
 	],
-	#category : #Rush
+	#category : 'Rush',
+	#package : 'Rush'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 RushClassPathPresenter class >> example1 [
 	^ (self on: SystemDictionary) open
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 RushClassPathPresenter class >> example2 [
 	^ (self on: String empty) open
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 RushClassPathPresenter >> addPathDelimiter [
 
 	self layout isEmpty ifFalse: [
@@ -26,7 +27,7 @@ RushClassPathPresenter >> addPathDelimiter [
 			expand: false ]
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 RushClassPathPresenter >> addPathElement: cls [
 
 	self layout
@@ -37,13 +38,13 @@ RushClassPathPresenter >> addPathElement: cls [
 		expand: false
 ]
 
-{ #category : #transmission }
+{ #category : 'transmission' }
 RushClassPathPresenter >> defaultInputPort [
 
 	^ self inputTextPort
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushClassPathPresenter >> defaultLayout [
 
 	^ SpBoxLayout newLeftToRight
@@ -52,7 +53,7 @@ RushClassPathPresenter >> defaultLayout [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushClassPathPresenter >> initializePresenters [
 
 	self topClass isClassOrTrait ifFalse: [ ^ self ].
@@ -63,26 +64,26 @@ RushClassPathPresenter >> initializePresenters [
 			addPathElement: cls ]
 ]
 
-{ #category : #transmission }
+{ #category : 'transmission' }
 RushClassPathPresenter >> inputTextPort [
 
 	^ SpLabelPort newPresenter: self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 RushClassPathPresenter >> label: aClass [
 
 	topClass := aClass.
 	self initializePresenters
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 RushClassPathPresenter >> setModelBeforeInitialization: aClass [
 
 	topClass := aClass
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushClassPathPresenter >> topClass [
 
 	^ topClass

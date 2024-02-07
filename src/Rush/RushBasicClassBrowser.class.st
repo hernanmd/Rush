@@ -1,6 +1,6 @@
 Class {
-	#name : #RushBasicClassBrowser,
-	#superclass : #RushMinimalBrowser,
+	#name : 'RushBasicClassBrowser',
+	#superclass : 'RushMinimalBrowser',
 	#instVars : [
 		'classes',
 		'instProtocols',
@@ -10,10 +10,11 @@ Class {
 		'classDefinition',
 		'classPathBreadcrumb'
 	],
-	#category : #Rush
+	#category : 'Rush',
+	#package : 'Rush'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 RushBasicClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
 
 	instMthdsTablePresenter
@@ -28,13 +29,13 @@ RushBasicClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
 			yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> browserTitle [ 
 
 	^ 'Basic Class Hierarchy Browser'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> buildOrganizationProtocols: aClass [
 
 	^ aClass
@@ -45,7 +46,7 @@ RushBasicClassBrowser >> buildOrganizationProtocols: aClass [
 		  ifNil: [ Array empty ]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushBasicClassBrowser >> classesLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -54,7 +55,7 @@ RushBasicClassBrowser >> classesLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> connectClassesPresenter [
 
 	classes transmitTo: classPathBreadcrumb.
@@ -72,7 +73,7 @@ RushBasicClassBrowser >> connectClassesPresenter [
 
 ]
 
-{ #category : #'private-instance side' }
+{ #category : 'private-instance side' }
 RushBasicClassBrowser >> connectInstMethodsPresenter [
 
 	instMethods
@@ -85,7 +86,7 @@ RushBasicClassBrowser >> connectInstMethodsPresenter [
 				ifNil: [ '' ] ]
 ]
 
-{ #category : #'private-instance side' }
+{ #category : 'private-instance side' }
 RushBasicClassBrowser >> connectInstProtocolsPresenter [
 
 	instProtocols
@@ -104,7 +105,7 @@ RushBasicClassBrowser >> connectInstProtocolsPresenter [
 		
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> connectPresenters [
 
 	self connectClassesPresenter.
@@ -112,25 +113,25 @@ RushBasicClassBrowser >> connectPresenters [
 	self connectInstMethodsPresenter.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> defaultClasses [
 
 	^ Smalltalk image allClasses asSortedCollection: [ : a : b | a name < b name ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> initializeClassDefinitionPresenter [
 
 	classDefinition := self newCode
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> initializeClassPathPresenter [
 
 	classPathBreadcrumb := (self instantiate: RushClassPathPresenter on: String empty)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> initializeClassesPresenter [
 
 	classes := self newFilteringList.
@@ -141,7 +142,7 @@ RushBasicClassBrowser >> initializeClassesPresenter [
 		sortingBlock: [ :a :b | a name < b name ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> initializeInstMethodsPresenter [
 
 	instMethods := self newTable.
@@ -152,7 +153,7 @@ RushBasicClassBrowser >> initializeInstMethodsPresenter [
 		sortingBlock: [ :a :b | a selector < b selector ]
 ]
 
-{ #category : #'private-instance side' }
+{ #category : 'private-instance side' }
 RushBasicClassBrowser >> initializeInstProtocolsPresenter [
 
 	instProtocols := self newFilteringList.
@@ -161,7 +162,7 @@ RushBasicClassBrowser >> initializeInstProtocolsPresenter [
 		sortingBlock: [ :a :b | a value name < b value name ]
 ]
 
-{ #category : #'private-instance side' }
+{ #category : 'private-instance side' }
 RushBasicClassBrowser >> initializeInstVariablesPresenter [
 
 	instVariables := self newFilteringList.
@@ -170,7 +171,7 @@ RushBasicClassBrowser >> initializeInstVariablesPresenter [
 		sortingBlock: [ :a :b | a value name < b value name ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> initializePresenters [
 
 	self initializeClassPathPresenter.
@@ -185,7 +186,7 @@ RushBasicClassBrowser >> initializePresenters [
 
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushBasicClassBrowser >> instMethodsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -196,7 +197,7 @@ RushBasicClassBrowser >> instMethodsLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushBasicClassBrowser >> instProtocolsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -205,7 +206,7 @@ RushBasicClassBrowser >> instProtocolsLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushBasicClassBrowser >> instVarsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -214,7 +215,7 @@ RushBasicClassBrowser >> instVarsLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushBasicClassBrowser >> lowerPaneLayout [
 
 	^ SpBoxLayout newLeftToRight
@@ -222,40 +223,40 @@ RushBasicClassBrowser >> lowerPaneLayout [
 		yourself
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 RushBasicClassBrowser >> openOnClass: aClass [ 
 
 	classes selectItem: aClass.
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 RushBasicClassBrowser >> openOnMethod: aMethod [ 
 
 	classes selectItem: aMethod selector
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 RushBasicClassBrowser >> selectAllProtocolIn: aSpListPresenter [ 
 	"Answer an item representing the all protocols in aSpListPresenter"
 	
 	aSpListPresenter selectItem: (aSpListPresenter items collect: #value)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> selectClass: anObject [
 
 	anObject asRushSelectionIn: self
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushBasicClassBrowser >> selectedInstMethods [
 
 	^ selectedInstMethods
 		ifNil: [ selectedInstMethods := OrderedCollection new ]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushBasicClassBrowser >> upperPaneLayout [
 
 	^ SpBoxLayout newTopToBottom 

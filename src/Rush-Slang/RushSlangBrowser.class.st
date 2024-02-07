@@ -1,20 +1,21 @@
 Class {
-	#name : #RushSlangBrowser,
-	#superclass : #RushBasicClassBrowser,
+	#name : 'RushSlangBrowser',
+	#superclass : 'RushBasicClassBrowser',
 	#instVars : [
 		'translatedSourcePresenter',
 		'inlineCheckPresenter'
 	],
-	#category : #Rush
+	#category : 'Rush-Slang',
+	#package : 'Rush-Slang'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushSlangBrowser >> browserTitle [ 
 
 	^ 'Slang Browser'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushSlangBrowser >> codeGeneratorClasses [
 	"Answer a <Collection> of Slang classes which can generate code through a code generator"
 	
@@ -22,7 +23,7 @@ RushSlangBrowser >> codeGeneratorClasses [
 		select: [ : c | c respondsTo: #codeGeneratorClass ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 RushSlangBrowser >> configureCodeGeneratorFor: aMethod [ 
 
 	| mClass mClassGenerator cg |
@@ -45,7 +46,7 @@ RushSlangBrowser >> configureCodeGeneratorFor: aMethod [
 	^ cg
 ]
 
-{ #category : #'private-instance side' }
+{ #category : 'private-instance side' }
 RushSlangBrowser >> connectInstMethodsPresenter [
 
 	super connectInstMethodsPresenter.
@@ -57,7 +58,7 @@ RushSlangBrowser >> connectInstMethodsPresenter [
 				ifNil: [ '' ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushSlangBrowser >> initializeInstMethodsPresenter [
 
 	super initializeInstMethodsPresenter.
@@ -67,7 +68,7 @@ RushSlangBrowser >> initializeInstMethodsPresenter [
 		whenChangedDo: [ : c | RushSettings inlineMethods: c ].
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushSlangBrowser >> initializePresenters [
 
 	super initializePresenters.
@@ -75,7 +76,7 @@ RushSlangBrowser >> initializePresenters [
 	classes items: self slangClasses
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushSlangBrowser >> instMethodsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -87,7 +88,7 @@ RushSlangBrowser >> instMethodsLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 RushSlangBrowser >> lowerPaneLayout [
 
 	^ SpPanedLayout newLeftToRight
@@ -104,7 +105,7 @@ RushSlangBrowser >> lowerPaneLayout [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushSlangBrowser >> slangClasses [
 	" Answer a <Collection> of <Class>"
 	
@@ -115,14 +116,14 @@ RushSlangBrowser >> slangClasses [
 
 ]
 
-{ #category : #'private-instance side' }
+{ #category : 'private-instance side' }
 RushSlangBrowser >> translateSourceCode: aMethod [
 
 	^ String streamContents: [ : stream | 
 		self translateSourceCodeFromMethod: aMethod in: stream ].
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 RushSlangBrowser >> translateSourceCodeFromMethod: aMethod in: aWriteStream [ 
 
 	| cg |
@@ -134,13 +135,13 @@ RushSlangBrowser >> translateSourceCodeFromMethod: aMethod in: aWriteStream [
 		ifAbsent: [ aWriteStream << 'Translation not found for the selected method' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushSlangBrowser >> translatedSourcePresenter [
 
 	^ translatedSourcePresenter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RushSlangBrowser >> translatedSourcePresenter: anObject [
 
 	translatedSourcePresenter := anObject

@@ -1,6 +1,6 @@
-Extension { #name : #CompiledCode }
+Extension { #name : 'CompiledCode' }
 
-{ #category : #'*Rush' }
+{ #category : '*Rush' }
 CompiledCode >> asRushSelectionIn: aRushBrowser [
 
 	aRushBrowser openOnMethod: self

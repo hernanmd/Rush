@@ -1,13 +1,14 @@
 Class {
-	#name : #RushMinimalBrowser,
-	#superclass : #RushAbstractBrowser,
+	#name : 'RushMinimalBrowser',
+	#superclass : 'RushAbstractBrowser',
 	#instVars : [
 		'srcCodePresenter'
 	],
-	#category : #Rush
+	#category : 'Rush',
+	#package : 'Rush'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RushMinimalBrowser >> initializeCodePresenter [
 
 	srcCodePresenter := self newCode
