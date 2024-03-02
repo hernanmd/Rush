@@ -1,3 +1,7 @@
+"
+Abstract class which provides a code presenter to subclasses.
+
+"
 Class {
 	#name : 'RushMinimalBrowser',
 	#superclass : 'RushAbstractBrowser',
@@ -12,4 +16,16 @@ Class {
 RushMinimalBrowser >> initializeCodePresenter [
 
 	srcCodePresenter := self newCode
+]
+
+{ #category : 'accessing' }
+RushMinimalBrowser >> srcCodePresenter [
+
+	^ srcCodePresenter
+]
+
+{ #category : 'accessing' }
+RushMinimalBrowser >> srcCodePresenter: anObject [
+
+	srcCodePresenter := anObject
 ]

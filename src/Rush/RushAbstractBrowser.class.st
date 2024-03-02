@@ -70,12 +70,6 @@ RushAbstractBrowser >> browserTitle [
 	self shouldBeImplemented
 ]
 
-{ #category : 'initialization' }
-RushAbstractBrowser >> connectPresenters [
-
-	self subclassResponsibility
-]
-
 { #category : 'layout' }
 RushAbstractBrowser >> defaultLayout [
 
