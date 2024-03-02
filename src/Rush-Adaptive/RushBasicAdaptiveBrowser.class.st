@@ -17,8 +17,8 @@ Class {
 		'firstListPresenter',
 		'accessorMap'
 	],
-	#category : 'Rush',
-	#package : 'Rush'
+	#category : 'Rush-Adaptive',
+	#package : 'Rush-Adaptive'
 }
 
 { #category : 'instance creation' }

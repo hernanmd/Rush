@@ -17,15 +17,17 @@ BaselineOfRush >> baseline: spec [
 				package: 'Rush';
 				package: 'Rush-Packages'  with: [ spec requires: #(Rush) ];
 				package: 'Rush-Slang'     with: [ spec requires: #(Rush) ];
+				package: 'Rush-Adaptive'  with: [ spec requires: #(Rush) ];
 				package: 'Rush-Druid'     with: [ spec requires: #(Rush VMMaker) ];
 				package: 'Rush-Tests'	     with: [ spec requires: #(Rush) ].
 
 			spec 
 				group: 'Core' 						with: #('Rush');
-				group: 'Slang'                 with: #('Rush' 'Rush-Slang');
-				group: 'Packages'              with: #('Rush');
-				group: 'Druid'                 with: #('Rush' 'Rush-Slang' 'Rush-Druid');
-				group: 'Tests' 						with: #('Rush' 'Rush-Tests');
+				group: 'Slang'                 with: #('Core' 'Rush-Slang');
+				group: 'Packages'              with: #('Rush-Packages');
+				group: 'Adaptive'              with: #('Rush-Adaptive');
+				group: 'Druid'                 with: #('Core' 'Rush-Slang' 'Rush-Druid');
+				group: 'Tests' 						with: #('Core' 'Rush-Tests');
 				group: 'default' 					with: #('Core' 'Tests') ]
 ]
 
