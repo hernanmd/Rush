@@ -31,32 +31,6 @@ RushAbstractBrowser class >> menuRushBrowserOn: aBuilder [
 		order: 627
 ]
 
-{ #category : 'private' }
-RushAbstractBrowser class >> menuRushPBBrowserOn: aBuilder [
-	<worldMenu>
-
-	(aBuilder item: #RushPB)
-		parent: #Tools;
-		label: 'Rush Packages Browser';
-		icon: (self iconNamed: #catalog);
-		action: [ RushPackagesBrowser new open ];
-		help: 'Rush Class Hierarchy Browser';
-		order: 628
-]
-
-{ #category : 'private' }
-RushAbstractBrowser class >> menuRushSlangBrowserOn: aBuilder [
-	<worldMenu>
-
-	(aBuilder item: #RushSB)
-		parent: #Tools;
-		label: 'Rush Slang Browser';
-		icon: (self iconNamed: #catalog);
-		action: [ RushSlangBrowser new open ];
-		help: 'Slang Browser';
-		order: 625
-]
-
 { #category : 'instance creation' }
 RushAbstractBrowser class >> open [ 
 	<script>
