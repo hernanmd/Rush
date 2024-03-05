@@ -1,7 +1,6 @@
 Class {
 	#name : 'RushListType',
 	#superclass : 'SpPresenter',
-	#classTraits : '{} + TraitedClass',
 	#instVars : [
 		'list',
 		'model'

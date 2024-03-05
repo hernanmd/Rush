@@ -10,7 +10,6 @@ RushBasicAdaptiveBrowser new open.
 Class {
 	#name : 'RushBasicAdaptiveBrowser',
 	#superclass : 'RushMinimalBrowser',
-	#classTraits : '{} + TraitedClass',
 	#instVars : [
 		'addPresenterButton',
 		'removePresenterButton',
