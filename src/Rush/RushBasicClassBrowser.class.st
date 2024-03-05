@@ -24,6 +24,60 @@ Class {
 	#tag : 'Core'
 }
 
+{ #category : 'commands' }
+RushBasicClassBrowser class >> buildClassCreationGroupWith: presenterInstance [
+
+	^ (CmCommandGroup named: 'ClassCreationRushMenu') asSpecGroup
+		register: ((SycCmAddSubclassCommand
+			forSpecWithIconNamed: #glamorousAdd
+			shortcutKey: 'A' asShortcut) 
+				context: presenterInstance);	
+		register: ((SycCmInsertSubclassCommand
+			forSpecWithIconNamed: #glamorousInto
+			shortcutKey: 'I' asShortcut) 
+				context: presenterInstance);
+		register: ((SycCmInsertSuperclassCommand
+			forSpecWithIconNamed: #glamorousUp
+			shortcutKey: 'S' asShortcut) 
+				context: presenterInstance);				
+		beDisplayedAsGroup;
+		yourself
+]
+
+{ #category : 'commands' }
+RushBasicClassBrowser class >> buildClassSelectionGroupWith: presenterInstance [
+
+	^ (CmCommandGroup named: 'ClassSelectionRushMenu') asSpecGroup
+		register: ((SycDeprecateClassCmCommand
+			forSpecWithIconNamed: #glamorousEdit
+			shortcutKey: 'D' asShortcut) 
+				context: presenterInstance);	
+		register: ((SycCMakeAbstractCommand
+			forSpecWithIconNamed: #glamorousRedCircle
+			shortcutKey: 'T' asShortcut) 
+				context: presenterInstance);		
+		beDisplayedAsGroup;
+		yourself
+]
+
+{ #category : 'commands' }
+RushBasicClassBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
+
+	rootCommandGroup
+		register: (self buildRushContextualGroupWith: presenterInstance)
+]
+
+{ #category : 'commands' }
+RushBasicClassBrowser class >> buildRushContextualGroupWith: presenterInstance [
+
+	^ (CmCommandGroup named: 'RushSelContextualMenu') asSpecGroup
+		register: (self buildClassCreationGroupWith: presenterInstance);
+		register: (self buildClassSelectionGroupWith: presenterInstance);
+		"register: (self buildRepositoryOperationsGroupWith: presenterInstance);
+		register: (self buildFormulaOperationsGroupWith: presenterInstance);"
+		yourself
+]
+
 { #category : 'initialization' }
 RushBasicClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
 
@@ -149,7 +203,8 @@ RushBasicClassBrowser >> initializeClassesPresenter [
 		items: self defaultClasses;
 		display: [ :class | class name];
 		displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
-		sortingBlock: [ :a :b | a name < b name ]
+		sortingBlock: [ :a :b | a name < b name ];
+		contextMenu: [ (self rootCommandsGroup / 'RushSelContextualMenu') beRoot asMenuPresenter ]
 ]
 
 { #category : 'initialization' }
