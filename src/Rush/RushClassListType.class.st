@@ -1,9 +1,9 @@
 Class {
 	#name : 'RushClassListType',
 	#superclass : 'RushListType',
-	#category : 'Rush-Lists',
+	#category : 'Rush-UI',
 	#package : 'Rush',
-	#tag : 'Lists'
+	#tag : 'UI'
 }
 
 { #category : 'initialization' }

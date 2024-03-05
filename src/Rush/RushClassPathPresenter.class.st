@@ -4,8 +4,9 @@ Class {
 	#instVars : [
 		'topClass'
 	],
-	#category : 'Rush',
-	#package : 'Rush'
+	#category : 'Rush-Utilities',
+	#package : 'Rush',
+	#tag : 'Utilities'
 }
 
 { #category : 'examples' }

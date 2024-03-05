@@ -5,8 +5,9 @@ Class {
 		'list',
 		'model'
 	],
-	#category : 'Rush',
-	#package : 'Rush'
+	#category : 'Rush-UI',
+	#package : 'Rush',
+	#tag : 'UI'
 }
 
 { #category : 'accessing' }

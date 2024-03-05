@@ -1,8 +1,9 @@
 Class {
 	#name : 'RushBrowseCommand',
 	#superclass : 'StInspectorBrowseSelectedCommand',
-	#category : 'Rush',
-	#package : 'Rush'
+	#category : 'Rush-Commands',
+	#package : 'Rush',
+	#tag : 'Commands'
 }
 
 { #category : 'default' }
@@ -29,7 +30,7 @@ RushBrowseCommand class >> documentContextRequiredSelectors [
 	^ super documentContextRequiredSelectors, #(selectedObject)
 ]
 
-{ #category : 'executing' }
+{ #category : 'execution' }
 RushBrowseCommand >> execute [ 
 
 	self context systemNavigation rushBrowse: self interestingObject

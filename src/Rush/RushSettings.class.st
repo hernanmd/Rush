@@ -5,8 +5,9 @@ Class {
 		'ComputeSenders',
 		'InlineMethods'
 	],
-	#category : 'Rush',
-	#package : 'Rush'
+	#category : 'Rush-Utilities',
+	#package : 'Rush',
+	#tag : 'Utilities'
 }
 
 { #category : 'accessing' }

@@ -8,8 +8,9 @@ Class {
 	#instVars : [
 		'srcCodePresenter'
 	],
-	#category : 'Rush',
-	#package : 'Rush'
+	#category : 'Rush-Core',
+	#package : 'Rush',
+	#tag : 'Core'
 }
 
 { #category : 'initialization' }

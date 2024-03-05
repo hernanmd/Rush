@@ -19,11 +19,12 @@ Class {
 		'classDefinition',
 		'classPathBreadcrumb'
 	],
-	#category : 'Rush',
-	#package : 'Rush'
+	#category : 'Rush-Core',
+	#package : 'Rush',
+	#tag : 'Core'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
 
 	instMthdsTablePresenter
@@ -55,7 +56,7 @@ RushBasicClassBrowser >> buildOrganizationProtocols: aClass [
 		  ifNil: [ Array empty ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'layout' }
 RushBasicClassBrowser >> classesLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -64,7 +65,7 @@ RushBasicClassBrowser >> classesLayout [
 		  yourself
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> connectClassesPresenter [
 
 	classes transmitTo: classPathBreadcrumb.
@@ -82,7 +83,7 @@ RushBasicClassBrowser >> connectClassesPresenter [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> connectInstMethodsPresenter [
 
 	instMethods
@@ -95,7 +96,7 @@ RushBasicClassBrowser >> connectInstMethodsPresenter [
 				ifNil: [ '' ] ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> connectInstProtocolsPresenter [
 
 	instProtocols
@@ -122,25 +123,25 @@ RushBasicClassBrowser >> connectPresenters [
 	self connectInstMethodsPresenter.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> defaultClasses [
 
 	^ Smalltalk image allClasses asSortedCollection: [ : a : b | a name < b name ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> initializeClassDefinitionPresenter [
 
 	classDefinition := self newCode
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> initializeClassPathPresenter [
 
 	classPathBreadcrumb := (self instantiate: RushClassPathPresenter on: String empty)
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> initializeClassesPresenter [
 
 	classes := self newFilteringList.
@@ -151,7 +152,7 @@ RushBasicClassBrowser >> initializeClassesPresenter [
 		sortingBlock: [ :a :b | a name < b name ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> initializeInstMethodsPresenter [
 
 	instMethods := self newTable.
@@ -162,7 +163,7 @@ RushBasicClassBrowser >> initializeInstMethodsPresenter [
 		sortingBlock: [ :a :b | a selector < b selector ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> initializeInstProtocolsPresenter [
 
 	instProtocols := self newFilteringList.
@@ -171,7 +172,7 @@ RushBasicClassBrowser >> initializeInstProtocolsPresenter [
 		sortingBlock: [ :a :b | a value name < b value name ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> initializeInstVariablesPresenter [
 
 	instVariables := self newFilteringList.
@@ -195,7 +196,7 @@ RushBasicClassBrowser >> initializePresenters [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> instMethodsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -206,7 +207,7 @@ RushBasicClassBrowser >> instMethodsLayout [
 		  yourself
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> instProtocolsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -215,7 +216,7 @@ RushBasicClassBrowser >> instProtocolsLayout [
 		  yourself
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 RushBasicClassBrowser >> instVarsLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -232,33 +233,33 @@ RushBasicClassBrowser >> lowerPaneLayout [
 		yourself
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'opening' }
 RushBasicClassBrowser >> openOnClass: aClass [ 
 
 	classes selectItem: aClass.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'opening' }
 RushBasicClassBrowser >> openOnMethod: aMethod [ 
 
 	classes selectItem: aMethod selector
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'api - selection' }
 RushBasicClassBrowser >> selectAllProtocolIn: aSpListPresenter [ 
 	"Answer an item representing the all protocols in aSpListPresenter"
 	
 	aSpListPresenter selectItem: (aSpListPresenter items collect: #value)
 ]
 
-{ #category : 'initialization' }
+{ #category : 'api - selection' }
 RushBasicClassBrowser >> selectClass: anObject [
 
 	anObject asRushSelectionIn: self
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'api - selection' }
 RushBasicClassBrowser >> selectedInstMethods [
 
 	^ selectedInstMethods

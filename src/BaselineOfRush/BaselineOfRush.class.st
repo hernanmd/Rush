@@ -19,6 +19,7 @@ BaselineOfRush >> baseline: spec [
 				package: 'Rush-Slang'     with: [ spec requires: #(Rush) ];
 				package: 'Rush-Adaptive'  with: [ spec requires: #(Rush) ];
 				package: 'Rush-Druid'     with: [ spec requires: #(Rush VMMaker) ];
+				package: 'Rush-Examples'  with: [ spec requires: #(Rush) ];
 				package: 'Rush-Tests'	     with: [ spec requires: #(Rush) ].
 
 			spec 
@@ -28,6 +29,7 @@ BaselineOfRush >> baseline: spec [
 				group: 'Adaptive'              with: #('Rush-Adaptive');
 				group: 'Druid'                 with: #('Core' 'Rush-Slang' 'Rush-Druid');
 				group: 'Tests' 						with: #('Core' 'Rush-Tests');
+				group: 'Examples'              with: #('Rush-Examples');
 				group: 'default' 					with: #('Core' 'Tests') ]
 ]
 

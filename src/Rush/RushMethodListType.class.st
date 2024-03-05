@@ -1,9 +1,9 @@
 Class {
 	#name : 'RushMethodListType',
 	#superclass : 'RushListType',
-	#category : 'Rush-Lists',
+	#category : 'Rush-UI',
 	#package : 'Rush',
-	#tag : 'Lists'
+	#tag : 'UI'
 }
 
 { #category : 'accessing' }

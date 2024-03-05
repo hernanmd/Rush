@@ -8,8 +8,9 @@ Class {
 		'selectedClsVars',
 		'classComment'
 	],
-	#category : 'Rush',
-	#package : 'Rush'
+	#category : 'Rush-Core',
+	#package : 'Rush',
+	#tag : 'Core'
 }
 
 { #category : 'initialization' }
