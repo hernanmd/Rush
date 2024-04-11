@@ -47,12 +47,23 @@ RushBasicClassBrowser new open.
 ```
 <img width="761" alt="Screenshot 2023-08-04 at 15 17 51" src="https://github.com/hernanmd/Rush/assets/4825959/5b87d105-5415-4d3c-ad7e-14e26da4bceb">
 
+## Alternative Class Browser
+
+```smalltalk
+RushClassBrowser new open
+```
+<img width="1509" alt="Screenshot 2024-04-11 at 13 27 26" src="https://github.com/hernanmd/Rush/assets/4825959/b51ba2d6-8116-4431-bce3-0913069310b9">
+
 ## Slang Browser
 
 ```smalltalk
 RushSlangBrowser new open.
 ```
 <img width="999" alt="Screenshot 2023-08-04 at 14 48 07" src="https://github.com/hernanmd/Rush/assets/4825959/ca5bf47b-e9c8-488b-855c-6b7b6b8d2459">
+
+## Bytecode Browser
+
+<img width="1512" alt="Screenshot 2024-04-11 at 13 19 15" src="https://github.com/hernanmd/Rush/assets/4825959/f7b98854-338a-4326-a13c-30e6f8b1bffb">
 
 # Contribute
 
@@ -85,7 +96,7 @@ Thus, it should be safe to depend on a fixed major version and moving minor vers
 	
 This software is licensed under the MIT License.
 
-Copyright Hernán Morales Durand, 2023.
+Copyright Hernán Morales Durand, 2024.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
