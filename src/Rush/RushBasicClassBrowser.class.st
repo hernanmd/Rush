@@ -300,6 +300,12 @@ RushBasicClassBrowser >> openOnMethod: aMethod [
 	classes selectItem: aMethod selector
 ]
 
+{ #category : 'command execution' }
+RushBasicClassBrowser >> processFailure: aMessageNotUnderstood of: aSycCmAddSubclassCommand [ 
+
+	aMessageNotUnderstood notifyUserOfCommand: aSycCmAddSubclassCommand
+]
+
 { #category : 'api - selection' }
 RushBasicClassBrowser >> selectAllProtocolIn: aSpListPresenter [ 
 	"Answer an item representing the all protocols in aSpListPresenter"
@@ -312,6 +318,13 @@ RushBasicClassBrowser >> selectClass: anObject [
 
 	anObject asRushSelectionIn: self
 
+]
+
+{ #category : 'backstops' }
+RushBasicClassBrowser >> selectedClass [
+	"Asnwer the receiver currently selected <Class>"
+	
+	^ classes selectedItem.
 ]
 
 { #category : 'api - selection' }
