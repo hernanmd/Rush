@@ -82,7 +82,7 @@ RushPackagesBrowser >> defaultClasses [
 { #category : 'initialization' }
 RushPackagesBrowser >> defaultPackages [
 
-	^ RPackageOrganizer default packages reject: #isTestPackage
+	^ PackageOrganizer default packages reject: #isTestPackage
 ]
 
 { #category : 'initialization' }

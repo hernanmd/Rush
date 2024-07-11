@@ -29,9 +29,11 @@ RushClassListType >> defaultClasses [
 RushClassListType >> initializePresenters [
 
 	super initializePresenters.
-	self listPresenter
+	list := self instantiate: SpFilteringListPresenter.
+	list
 		items: self defaultClasses;
 		display: [ :class | class name];
 		displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
-		sortingBlock: [ :a :b | a name < b name ]
+		sortingBlock: [ :a :b | a name < b name ];
+		itemFilter: [ :item :string | item asString asLowercase beginsWith: string asLowercase ].
 ]
