@@ -280,6 +280,13 @@ RushBasicClassBrowser >> instVarsLayout [
 		  yourself
 ]
 
+{ #category : 'accessing' }
+RushBasicClassBrowser >> lastSelectedClass [
+	"For compatibiliy with Commander 2 system commands"
+	
+	^ self selectedClass
+]
+
 { #category : 'layout' }
 RushBasicClassBrowser >> lowerPaneLayout [
 
@@ -304,6 +311,13 @@ RushBasicClassBrowser >> openOnMethod: aMethod [
 RushBasicClassBrowser >> processFailure: aMessageNotUnderstood of: aSycCmAddSubclassCommand [ 
 
 	aMessageNotUnderstood notifyUserOfCommand: aSycCmAddSubclassCommand
+]
+
+{ #category : 'refactoring support' }
+RushBasicClassBrowser >> refactoringScopes [
+	"Implemented because commands refers to 'refactoringScopes', implemnted in Calypso"
+
+	^ { RBBrowserEnvironmentWrapper onEnvironment: RBBrowserEnvironment new }
 ]
 
 { #category : 'api - selection' }
@@ -332,6 +346,32 @@ RushBasicClassBrowser >> selectedInstMethods [
 
 	^ selectedInstMethods
 		ifNil: [ selectedInstMethods := OrderedCollection new ]
+]
+
+{ #category : 'tool controlling' }
+RushBasicClassBrowser >> showClass: aClass [ 
+
+	| selected choices |
+	choices := { 'Select new class' .
+		'Open a new browser on the new class' .
+		'Do nothing' }.
+	selected := self application newSelect 
+		items: choices;
+		title: 'Select post-creation action';
+		openModal.
+	selected ifNil: [ ^ self ].
+	selected = choices first
+		ifTrue: [ ^ self selectClass: aClass ].
+	selected = choices second
+		ifTrue: [ self class openOnClass: aClass ].
+
+]
+
+{ #category : 'accessing' }
+RushBasicClassBrowser >> system [
+	"Another System Command - Calypso bag we need to carry"
+	
+	^ self class environment
 ]
 
 { #category : 'layout' }

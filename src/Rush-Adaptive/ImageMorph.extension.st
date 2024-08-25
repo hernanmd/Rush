@@ -1,6 +1,6 @@
 Extension { #name : 'ImageMorph' }
 
-{ #category : '*Rush' }
+{ #category : '*Rush-Adaptive' }
 ImageMorph >> asRushDisplayItem [
 
 	^ self displayString.

@@ -39,6 +39,12 @@ RushAbstractBrowser class >> open [
 	^ self new open
 ]
 
+{ #category : 'opening' }
+RushAbstractBrowser class >> openOnClass: aClass [
+
+	self open selectClass: aClass
+]
+
 { #category : 'initialization' }
 RushAbstractBrowser >> browserTitle [
 		
