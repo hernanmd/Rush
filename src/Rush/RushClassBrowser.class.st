@@ -209,8 +209,8 @@ RushClassBrowser >> upperPaneLayout [
 
 			add: (SpBoxLayout newTopToBottom
 				spacing: self spacingBetweenPanes;
-				add: self instProtocolsLayout;
-				add: self instVarsLayout;
+				add: instProtocols;
+				add: instVariables;
 				yourself);
 			add: self instMethodsLayout;
 			yourself);

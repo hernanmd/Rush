@@ -17,7 +17,8 @@ Class {
 		'instVariables',
 		'selectedInstMethods',
 		'classDefinition',
-		'classPathBreadcrumb'
+		'classPathBreadcrumb',
+		'sideSelectorPresenter'
 	],
 	#category : 'Rush-Core',
 	#package : 'Rush',
@@ -192,7 +193,7 @@ RushBasicClassBrowser >> initializeClassDefinitionPresenter [
 { #category : 'initialization' }
 RushBasicClassBrowser >> initializeClassPathPresenter [
 
-	classPathBreadcrumb := (self instantiate: RushClassPathPresenter on: String empty)
+	classPathBreadcrumb := self instantiate: RushClassPathPresenter on: String empty
 ]
 
 { #category : 'initialization' }
@@ -222,7 +223,8 @@ RushBasicClassBrowser >> initializeInstMethodsPresenter [
 RushBasicClassBrowser >> initializeInstProtocolsPresenter [
 
 	instProtocols := self newFilteringList.
-	instProtocols listPresenter
+	instProtocols
+		headerTitle: 'Instance protocols';
 		display: [ :aPair | aPair value name ];
 		sortingBlock: [ :a :b | a value name < b value name ]
 ]
@@ -231,7 +233,8 @@ RushBasicClassBrowser >> initializeInstProtocolsPresenter [
 RushBasicClassBrowser >> initializeInstVariablesPresenter [
 
 	instVariables := self newFilteringList.
-	instVariables listPresenter
+	instVariables
+		headerTitle: 'Instance variables';
 		display: [ :aPair | aPair value name ];
 		sortingBlock: [ :a :b | a value name < b value name ]
 ]
@@ -244,11 +247,34 @@ RushBasicClassBrowser >> initializePresenters [
 	
 	self initializeInstProtocolsPresenter.
 	self initializeInstVariablesPresenter.
+	self initializeSideSelectorPresenter.
 	self initializeInstMethodsPresenter.
 
 	self initializeCodePresenter.
 	self initializeClassDefinitionPresenter.
 
+]
+
+{ #category : 'initialization' }
+RushBasicClassBrowser >> initializeSideSelectorPresenter [
+
+	sideSelectorPresenter := self newCheckBox
+		label: 'Class';
+		whenActivatedDo: [ 
+			instProtocols 
+				headerTitle: 'Class protocols';
+				items: (self buildOrganizationProtocols: self selectedClass class).
+			instVariables
+				headerTitle: 'Class variables';
+				items: self selectedClass classVariables ];
+		whenDeactivatedDo: [ 
+			instProtocols 
+				headerTitle: 'Instance protocols';
+				items: (self buildOrganizationProtocols: self selectedClass).
+			instVariables
+				headerTitle: 'Instance variables';
+				items: self class instanceVariables ];
+		yourself.
 ]
 
 { #category : 'initialization' }
@@ -259,24 +285,6 @@ RushBasicClassBrowser >> instMethodsLayout [
 				add: 'Instance Methods' expand: false;
 				yourself) expand: false;
 		  add: instMethods;
-		  yourself
-]
-
-{ #category : 'initialization' }
-RushBasicClassBrowser >> instProtocolsLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  add: 'Instance Protocols' expand: false;
-		  add: instProtocols;
-		  yourself
-]
-
-{ #category : 'initialization' }
-RushBasicClassBrowser >> instVarsLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  add: 'Instance Variables' expand: false;
-		  add: instVariables;
 		  yourself
 ]
 
@@ -382,9 +390,10 @@ RushBasicClassBrowser >> upperPaneLayout [
 		add: (SpBoxLayout newLeftToRight
 			spacing: self spacingBetweenPanes;
 			add: self classesLayout;
-			add: (SpPanedLayout newTopToBottom
-				add: self instProtocolsLayout;
-				add: self instVarsLayout;
+			add: (SpBoxLayout newTopToBottom
+				add: instProtocols;
+				add: instVariables;
+				add: sideSelectorPresenter expand: false;
 				yourself);
 			add: self instMethodsLayout;
 			yourself);
