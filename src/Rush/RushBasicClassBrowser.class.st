@@ -171,11 +171,25 @@ RushBasicClassBrowser >> connectInstProtocolsPresenter [
 ]
 
 { #category : 'initialization' }
+RushBasicClassBrowser >> connectInstVariablesPresenter [
+
+	instVariables 
+		transmitTo: instMethods
+		transform: [ : instVarSlot | 
+			instVarSlot
+				ifNotNil: [ self selectedRBClass whichMethodsReferToInstanceVariable: instVarSlot name ]
+				ifNil: [ #(  ) ] ].
+
+		
+]
+
+{ #category : 'initialization' }
 RushBasicClassBrowser >> connectPresenters [
 
 	self connectClassesPresenter.
 	self connectInstProtocolsPresenter.
 	self connectInstMethodsPresenter.
+	self connectInstVariablesPresenter
 ]
 
 { #category : 'initialization' }
@@ -354,6 +368,14 @@ RushBasicClassBrowser >> selectedInstMethods [
 
 	^ selectedInstMethods
 		ifNil: [ selectedInstMethods := OrderedCollection new ]
+]
+
+{ #category : 'initialization' }
+RushBasicClassBrowser >> selectedRBClass [
+	"Private - Answer the selected class as RB class"
+
+	^ (RBNamespace onEnvironment: (RBClassEnvironment class: self selectedClass))
+		classFor: self selectedClass.
 ]
 
 { #category : 'tool controlling' }
