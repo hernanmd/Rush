@@ -3,11 +3,7 @@ Class {
 	#superclass : 'RushBasicClassBrowser',
 	#instVars : [
 		'packages',
-		'packagesPresenter',
-		'allClasses',
-		'extendedClassesPresenter',
-		'traitsPresenter',
-		'unsentsPresenter'
+		'packagesPresenter'
 	],
 	#category : 'Rush-Packages',
 	#package : 'Rush-Packages'
@@ -37,33 +33,13 @@ RushPackagesBrowser >> connectPackagesPresenter [
 		transmitTo: classes
 		transform: [ :aPackage |
 			aPackage
-				ifNotNil: [ aPackage definedClasses asArray ]
-				ifNil: [ #(  ) ] ].
-
-	packagesPresenter
-		transmitTo: extendedClassesPresenter
-		transform: [ :aPackage |
-			aPackage
-				ifNotNil: [ aPackage extendedClasses asArray ]
-				ifNil: [ #(  ) ] ].
-			
-	packagesPresenter
-		transmitTo: traitsPresenter
-		transform: [ :aPackage |
-			aPackage
-				ifNotNil: [ aPackage asRingDefinition traits asArray ]
-				ifNil: [ #(  ) ] ].
-
-	classes
-		transmitTo: unsentsPresenter
-		transform: [ : aClass |
-			aClass
-				ifNotNil: [ aClass allUnsentMessages asArray ]
-				ifNil: [ #(  ) ] ].
+				ifNotNil: [ aPackage definedClasses ]
+				ifNil: [ OrderedCollection new ] ].
 
 	packagesPresenter
 		transmitTo: classDefinition
-		transform: [ :aPackage | self classTemplateFor: aPackage ]
+		transform: [ :aPackage | self classTemplateFor: aPackage ].
+
 ]
 
 { #category : 'initialization' }
@@ -76,7 +52,7 @@ RushPackagesBrowser >> connectPresenters [
 { #category : 'initialization' }
 RushPackagesBrowser >> defaultClasses [
 
-	^ Array empty
+	^ OrderedCollection empty
 ]
 
 { #category : 'initialization' }
@@ -94,22 +70,7 @@ RushPackagesBrowser >> initializePackagesPresenter [
 		displayIcon: [ self iconNamed: #package ];
 		sortingBlock: [ :a :b | a name < b name ];
 		items: self packages.
-		
-	extendedClassesPresenter := self newFilteringList.
-	extendedClassesPresenter listPresenter
-		display: [ :item | item name ];
-		displayIcon: [ self iconNamed: #class ];
-		sortingBlock: [ :a :b | a name < b name ].
 
-	traitsPresenter := self newFilteringList.
-	traitsPresenter listPresenter
-		display: [ :item | item name ];
-		displayIcon: [ self iconNamed: #trait ];
-		sortingBlock: [ :a :b | a name < b name ].
-		
-	unsentsPresenter := self newFilteringList.
-	unsentsPresenter listPresenter
-		sortingBlock: [ :a :b | a < b ].
 ]
 
 { #category : 'initialization' }
@@ -123,51 +84,15 @@ RushPackagesBrowser >> initializePresenters [
 RushPackagesBrowser >> openOnClass: aClass [
 
 	packagesPresenter items: self defaultPackages.
-	packagesPresenter selectItem: (RPackageOrganizer default packageOf: aClass).
+	packagesPresenter selectItem: (PackageOrganizer default packageOf: aClass).
 	super openOnClass: aClass
 ]
 
 { #category : 'opening' }
 RushPackagesBrowser >> openOnMethod: aMethod [ 
 
-	packagesPresenter selectItem: (RPackageOrganizer default packageOf: aMethod methodClass) packageName.
+	packagesPresenter selectItem: (PackageOrganizer default packageOf: aMethod methodClass) packageName.
 	super openOnMethod: aMethod.
-]
-
-{ #category : 'layout' }
-RushPackagesBrowser >> packageAllClassesLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  add: 'All Classes' expand: false;
-		  add: classes;
-		  yourself
-]
-
-{ #category : 'layout' }
-RushPackagesBrowser >> packageExtendedClassesLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  add: 'Extended Classes' expand: false;
-		  add: extendedClassesPresenter;
-		  yourself
-]
-
-{ #category : 'layout' }
-RushPackagesBrowser >> packageTraitsLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  add: 'Traits' expand: false;
-		  add: traitsPresenter;
-		  yourself
-]
-
-{ #category : 'layout' }
-RushPackagesBrowser >> packageUnsentLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  add: 'Unsents' expand: false;
-		  add: unsentsPresenter;
-		  yourself
 ]
 
 { #category : 'initialization' }
@@ -194,10 +119,14 @@ RushPackagesBrowser >> upperPaneLayout [
 		add: (SpBoxLayout newLeftToRight
 			spacing: self spacingBetweenPanes;
 			add: self packagesLayout;
-			add: self packageAllClassesLayout;
-			add: self packageExtendedClassesLayout;
-			add: self packageTraitsLayout;
-			add: self packageUnsentLayout;
+			add: self classesLayout;
+			add: (SpBoxLayout newTopToBottom
+				add: instProtocols;
+				add: instVariables;
+				add: sideSelectorPresenter expand: false;
+				yourself);
+			add: self instMethodsLayout;
 			yourself);
 		yourself
+
 ]

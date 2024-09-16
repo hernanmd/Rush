@@ -136,6 +136,11 @@ RushBasicClassBrowser >> connectClassesPresenter [
 	classes transmitTo: classDefinition transform: [ :aClass |
 		aClass ifNotNil: [ aClass definitionString ] ifNil: [ '' ] ].
 
+	classes transmitTo: instMethods transform: [ : aClass |
+		aClass 
+			ifNil: [ OrderedCollection new ]
+			ifNotNil: [ aClass methods ] ]
+
 ]
 
 { #category : 'initialization' }
