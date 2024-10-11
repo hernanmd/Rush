@@ -17,7 +17,7 @@ Class {
 RushClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
 
 	instMthdsTablePresenter
-		addColumn: ((SpCheckBoxTableColumn title: '' evaluated: [ : im | self selectedInstMethods includes: im ])
+		addColumn: ((SpCheckBoxTableColumn title: '' evaluated: [ : im | self selectedMethods includes: im ])
 			onActivation: [ : cv | ];
 			onDeactivation: [ : cv |  ];
 			beNotExpandable;

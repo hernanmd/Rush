@@ -6,6 +6,12 @@ Class {
 	#tag : 'Core'
 }
 
+{ #category : 'accessing' }
+RushAbstractBrowser class >> application [
+
+	^ StPharoApplication current
+]
+
 { #category : 'private' }
 RushAbstractBrowser class >> menuRushBasicBrowserOn: aBuilder [
 	<worldMenu>
@@ -40,9 +46,15 @@ RushAbstractBrowser class >> open [
 ]
 
 { #category : 'opening' }
-RushAbstractBrowser class >> openOnClass: aClass [
+RushAbstractBrowser class >> updateSelectedClass: aClass [
 
 	self open selectClass: aClass
+]
+
+{ #category : 'opening' }
+RushAbstractBrowser class >> updateSelectedMethod: aCompiledMethod [
+
+	self new open; selectMethod: aCompiledMethod
 ]
 
 { #category : 'initialization' }

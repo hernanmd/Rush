@@ -15,7 +15,6 @@ Class {
 		'instProtocols',
 		'instMethods',
 		'instVariables',
-		'selectedInstMethods',
 		'classDefinition',
 		'classPathBreadcrumb',
 		'sideSelectorPresenter'
@@ -25,7 +24,7 @@ Class {
 	#tag : 'Core'
 }
 
-{ #category : 'commands' }
+{ #category : 'commands - classes' }
 RushBasicClassBrowser class >> buildClassCreationGroupWith: presenterInstance [
 
 	^ (CmCommandGroup named: 'ClassCreationRushMenu') asSpecGroup
@@ -45,7 +44,7 @@ RushBasicClassBrowser class >> buildClassCreationGroupWith: presenterInstance [
 		yourself
 ]
 
-{ #category : 'commands' }
+{ #category : 'commands - classes' }
 RushBasicClassBrowser class >> buildClassSelectionGroupWith: presenterInstance [
 
 	^ (CmCommandGroup named: 'ClassSelectionRushMenu') asSpecGroup
@@ -65,13 +64,82 @@ RushBasicClassBrowser class >> buildClassSelectionGroupWith: presenterInstance [
 RushBasicClassBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
 
 	rootCommandGroup
-		register: (self buildRushContextualGroupWith: presenterInstance)
+		register: (self buildRushClassContextualGroupWith: presenterInstance);
+		register: (self buildMethodContextualGroupWith: presenterInstance)
+]
+
+{ #category : 'commands - methods' }
+RushBasicClassBrowser class >> buildMethodBrowsingGroupWith: presenterInstance [
+
+	^ (CmCommandGroup named: 'MethodBrowsingRushMenu') asSpecGroup
+		register: ((CmCommandGroup forSpecNamed: 'View')
+			beDisplayedAsGroup;
+			register: (StMessageBrowseFullCommand forSpecContext: presenterInstance);
+			register: (StMessageInspectMethodCommand forSpecContext: presenterInstance);
+			register: (StMessageSendersCommand forSpecContext: presenterInstance);
+			register: (StMessageImplementorsCommand forSpecContext: presenterInstance);
+			register: (StMessageUsersCommand forSpecContext: presenterInstance);
+			register: (StMessageVersionsCommand forSpecContext: presenterInstance);
+			yourself);
+		register: ((CmCommandGroup forSpecNamed: 'Critical')
+			beDisplayedAsGroup;
+			register: (StMessageRemoveMethodCommand forSpecContext: presenterInstance);
+			register: (StVersionRevertCommand forSpecContext: presenterInstance);
+			yourself);
+		beRoot;
+		yourself
+]
+
+{ #category : 'commands - methods' }
+RushBasicClassBrowser class >> buildMethodContextualGroupWith: presenterInstance [
+
+	^ (CmCommandGroup named: 'RushMethodsSelContextualMenu') asSpecGroup
+		register: (self buildMethodBrowsingGroupWith: presenterInstance);
+		register: (self buildMethodRefactoringGroupWith: presenterInstance);
+		register: (self buildMethodExtraGroupWith: presenterInstance);
+		yourself
+]
+
+{ #category : 'commands - methods' }
+RushBasicClassBrowser class >> buildMethodExtraGroupWith: presenterInstance [
+
+	^ (CmCommandGroup named: 'Extra') asSpecGroup
+			register: (SycInspectMethodCommand forSpecContext: presenterInstance);
+			register: (SycClassifyMthCommand forSpecContext: presenterInstance);
+			register: (SycCopyMethodNameToClipboardCommand forSpecContext: presenterInstance);
+			register: (SycCopyTestMethodNameToClipboardCommand forSpecContext: presenterInstance);
+			register: (SycFileOutMethodCommand forSpecContext: presenterInstance);			
+		yourself
+
+]
+
+{ #category : 'commands - methods' }
+RushBasicClassBrowser class >> buildMethodRefactoringGroupWith: presenterInstance [
+
+	^ (CmCommandGroup named: 'Refactorings') asSpecGroup
+		register: ((CmCommandGroup forSpecNamed: 'View')
+			beDisplayedAsGroup;
+			register: (StMessageBrowseFullCommand forSpecContext: self);
+			register: (StMessageInspectMethodCommand forSpecContext: self);
+			yourself);
+		register: ((CmCommandGroup forSpecNamed: 'Navigation')
+			beDisplayedAsGroup;
+			register: (StMessageSendersCommand forSpecContext: self);
+			register: (StMessageImplementorsCommand forSpecContext: self);
+			register: (StMessageUsersCommand forSpecContext: self);
+			register: (StMessageVersionsCommand forSpecContext: self);
+			yourself);
+		register: ((CmCommandGroup forSpecNamed: 'CRITICAL')
+			beDisplayedAsGroup;
+			register: (StMessageRemoveMethodCommand forSpecContext: self);
+			yourself);
+		yourself
 ]
 
 { #category : 'commands' }
-RushBasicClassBrowser class >> buildRushContextualGroupWith: presenterInstance [
+RushBasicClassBrowser class >> buildRushClassContextualGroupWith: presenterInstance [
 
-	^ (CmCommandGroup named: 'RushSelContextualMenu') asSpecGroup
+	^ (CmCommandGroup named: 'RushClassSelContextualMenu') asSpecGroup
 		register: (self buildClassCreationGroupWith: presenterInstance);
 		register: (self buildClassSelectionGroupWith: presenterInstance);
 		"register: (self buildRepositoryOperationsGroupWith: presenterInstance);
@@ -83,7 +151,7 @@ RushBasicClassBrowser class >> buildRushContextualGroupWith: presenterInstance [
 RushBasicClassBrowser >> addInstanceMethodsColumnsTo: instMthdsTablePresenter [
 
 	instMthdsTablePresenter
-		addColumn: ((SpCheckBoxTableColumn title: '' evaluated: [ : im | self selectedInstMethods includes: im ])
+		addColumn: ((SpCheckBoxTableColumn title: '' evaluated: [ : im | self selectedMethods includes: im ])
 			onActivation: [ : cv | ];
 			onDeactivation: [ : cv |  ];
 			beNotExpandable;
@@ -203,6 +271,18 @@ RushBasicClassBrowser >> defaultClasses [
 	^ Smalltalk image allClasses asSortedCollection: [ : a : b | a name < b name ]
 ]
 
+{ #category : 'private - actions' }
+RushBasicClassBrowser >> doBrowseMethod [
+
+	self class updateSelectedMethod: self selectedMethod
+]
+
+{ #category : 'command execution' }
+RushBasicClassBrowser >> doBrowseSenders [
+
+	StMessageBrowser browse: self selectedMethods
+]
+
 { #category : 'initialization' }
 RushBasicClassBrowser >> initializeClassDefinitionPresenter [
 
@@ -224,28 +304,7 @@ RushBasicClassBrowser >> initializeClassesPresenter [
 		display: [ :class | class name];
 		displayIcon: [ :aClass | self iconNamed: aClass systemIconName ];
 		sortingBlock: [ :a :b | a name < b name ];
-		contextMenu: [ (self rootCommandsGroup / 'RushSelContextualMenu') beRoot asMenuPresenter ]
-]
-
-{ #category : 'initialization' }
-RushBasicClassBrowser >> initializeInstMethodsPresenter [
-
-	instMethods := self newTable.
-	self addInstanceMethodsColumnsTo: instMethods.
-	instMethods
-		alternateRowsColor;
-		items: OrderedCollection new;
-		sortingBlock: [ :a :b | a selector < b selector ]
-]
-
-{ #category : 'initialization' }
-RushBasicClassBrowser >> initializeInstProtocolsPresenter [
-
-	instProtocols := self newFilteringList.
-	instProtocols
-		headerTitle: 'Instance protocols';
-		display: [ :aPair | aPair value name ];
-		sortingBlock: [ :a :b | a value name < b value name ]
+		contextMenu: [ (self rootCommandsGroup / 'RushClassSelContextualMenu') beRoot asMenuPresenter ]
 ]
 
 { #category : 'initialization' }
@@ -259,19 +318,41 @@ RushBasicClassBrowser >> initializeInstVariablesPresenter [
 ]
 
 { #category : 'initialization' }
+RushBasicClassBrowser >> initializeMethodsPresenter [
+
+	instMethods := self newTable.
+	self addInstanceMethodsColumnsTo: instMethods.
+	instMethods
+		alternateRowsColor;
+		items: OrderedCollection new;
+		sortingBlock: [ :a :b | a selector < b selector ];
+		contextMenu: [ (self rootCommandsGroup / 'RushMethodsSelContextualMenu') beRoot asMenuPresenter ]
+]
+
+{ #category : 'initialization' }
 RushBasicClassBrowser >> initializePresenters [
 
 	self initializeClassPathPresenter.
 	self initializeClassesPresenter.
 	
-	self initializeInstProtocolsPresenter.
+	self initializeProtocolsPresenter.
 	self initializeInstVariablesPresenter.
 	self initializeSideSelectorPresenter.
-	self initializeInstMethodsPresenter.
+	self initializeMethodsPresenter.
 
 	self initializeCodePresenter.
 	self initializeClassDefinitionPresenter.
 
+]
+
+{ #category : 'initialization' }
+RushBasicClassBrowser >> initializeProtocolsPresenter [
+
+	instProtocols := self newFilteringList.
+	instProtocols
+		headerTitle: 'Instance protocols';
+		display: [ :aPair | aPair value name ];
+		sortingBlock: [ :a :b | a value name < b value name ]
 ]
 
 { #category : 'initialization' }
@@ -322,18 +403,6 @@ RushBasicClassBrowser >> lowerPaneLayout [
 		yourself
 ]
 
-{ #category : 'opening' }
-RushBasicClassBrowser >> openOnClass: aClass [ 
-
-	classes selectItem: aClass.
-]
-
-{ #category : 'opening' }
-RushBasicClassBrowser >> openOnMethod: aMethod [ 
-
-	classes selectItem: aMethod selector
-]
-
 { #category : 'command execution' }
 RushBasicClassBrowser >> processFailure: aMessageNotUnderstood of: aSycCmAddSubclassCommand [ 
 
@@ -361,18 +430,33 @@ RushBasicClassBrowser >> selectClass: anObject [
 
 ]
 
-{ #category : 'backstops' }
+{ #category : 'api - selection' }
+RushBasicClassBrowser >> selectMethod: aCompiledMethod [
+
+	aCompiledMethod asRushSelectionIn: self
+
+]
+
+{ #category : 'api - selection' }
 RushBasicClassBrowser >> selectedClass [
 	"Asnwer the receiver currently selected <Class>"
 	
 	^ classes selectedItem.
 ]
 
-{ #category : 'api - selection' }
-RushBasicClassBrowser >> selectedInstMethods [
+{ #category : 'accessing' }
+RushBasicClassBrowser >> selectedMethod [
+	"Answer the first selected <CompiledMethod> in the receiver"
 
-	^ selectedInstMethods
-		ifNil: [ selectedInstMethods := OrderedCollection new ]
+	^ self selectedMethods anyOne
+]
+
+{ #category : 'api - selection' }
+RushBasicClassBrowser >> selectedMethods [
+	"Answer a <Collection> of selected <CompiledMethod>"
+
+	^ instMethods selectedItems
+
 ]
 
 { #category : 'initialization' }
@@ -398,7 +482,7 @@ RushBasicClassBrowser >> showClass: aClass [
 	selected = choices first
 		ifTrue: [ ^ self selectClass: aClass ].
 	selected = choices second
-		ifTrue: [ self class openOnClass: aClass ].
+		ifTrue: [ self class updateSelectedClass: aClass ].
 
 ]
 
@@ -407,6 +491,23 @@ RushBasicClassBrowser >> system [
 	"Another System Command - Calypso bag we need to carry"
 	
 	^ self class environment
+]
+
+{ #category : 'api - selection' }
+RushBasicClassBrowser >> updateSelectedClass: aClass [ 
+
+	classes selectItem: aClass.
+]
+
+{ #category : 'api - selection' }
+RushBasicClassBrowser >> updateSelectedMethod: aCompiledMethod [ 
+	"Private - Select the receiver's items referred by aCompiledMethod"
+	
+	self updateSelectedClass: aCompiledMethod methodClass.
+	instMethods selectItem: aCompiledMethod.
+	instProtocols items 
+		detect: [ : assoc | assoc value = aCompiledMethod protocol ]
+		ifFound: [ : assoc | instProtocols selectItem: assoc ]
 ]
 
 { #category : 'layout' }
